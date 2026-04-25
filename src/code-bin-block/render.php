@@ -7,7 +7,7 @@
  * phpcs:disable WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
  */
 
-$srcdoc = '';
+$srcdoc  = '';
 $srcdoc .= '<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"></head><body>';
 if ( ! empty( $attributes['html'] ) ) {
 	$srcdoc .= $attributes['html'];
@@ -24,6 +24,13 @@ if ( ! empty( $attributes['javascript'] ) ) {
 $srcdoc .= '</body></html>';
 
 ?>
-<iframe <?php echo get_block_wrapper_attributes(); ?> srcdoc="<?php echo esc_attr( $srcdoc ); ?>" sandbox="allow-scripts">
+<iframe
+	<?php
+	// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- ignore core function
+	echo get_block_wrapper_attributes();
+	?>
+	srcdoc="<?php echo esc_attr( $srcdoc ); ?>"
+	sandbox="allow-scripts"
+>
 	<?php esc_html_e( 'Code Bin – hello from a dynamic block!', 'code-bin-block' ); ?>
 </iframe>
