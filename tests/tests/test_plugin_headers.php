@@ -2,10 +2,10 @@
 /**
  * Test Plugin Readme and PHP Headers
  *
- * @package WpPluginTemplate
+ * @package CodeBinBlock
  */
 
-namespace PWCC\WpPluginTemplate\Tests;
+namespace PWCC\CodeBinBlock\Tests;
 
 use WP_UnitTestCase;
 

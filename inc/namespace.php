@@ -1,11 +1,11 @@
 <?php
 /**
- * WP Plugin Template
+ * Code Bin Block
  *
- * @package           WpPluginTemplate
+ * @package           CodeBinBlock
  */
 
-namespace PWCC\WpPluginTemplate;
+namespace PWCC\CodeBinBlock;
 
 const PLUGIN_VERSION = '1.0.0';
 
