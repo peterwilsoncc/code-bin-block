@@ -48,6 +48,24 @@ foreach ( parse_blocks( get_post()->post_content ) as $code_bin_block ) {
 // The share dialog is not shown.
 remove_action( 'embed_footer', 'print_embed_sharing_dialog' );
 
+/*
+ * Embeds do not load the theme's styles. Load the global styles' custom
+ * properties only, so a colour scheme set in theme.json applies here too.
+ */
+add_action(
+	'enqueue_embed_scripts',
+	function () {
+		$variables = wp_get_global_stylesheet( array( 'variables' ) );
+		if ( '' === trim( $variables ) ) {
+			return;
+		}
+
+		wp_register_style( 'code-bin-block-embed-variables', false, array(), PLUGIN_VERSION );
+		wp_add_inline_style( 'code-bin-block-embed-variables', $variables );
+		wp_enqueue_style( 'code-bin-block-embed-variables' );
+	}
+);
+
 add_action(
 	'embed_head',
 	function () {

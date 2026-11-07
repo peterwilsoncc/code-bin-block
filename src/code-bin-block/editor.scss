@@ -5,7 +5,7 @@
 .wp-block-code-bin-block-code-bin-block {
 
 	.code-bin__tabs .components-tab-panel__tabs {
-		background: var(--code-bin-chrome);
+		background: var(--code-bin-toolbar);
 		border-bottom: 1px solid var(--code-bin-border);
 	}
 
@@ -13,8 +13,8 @@
 		color: var(--code-bin-muted);
 
 		&.is-active {
-			color: var(--syntax-foreground);
-			box-shadow: inset 0 -2px 0 #0969da;
+			color: var(--code-bin-syntax-foreground);
+			box-shadow: inset 0 -2px 0 var(--code-bin-accent);
 		}
 	}
 

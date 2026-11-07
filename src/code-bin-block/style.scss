@@ -1,33 +1,70 @@
 /**
  * Styles for the front end and the editor.
  *
- * The block always renders in light mode regardless of the theme or the
- * visitor's colour scheme preference.
+ * The block renders in the colour scheme set below, light by default,
+ * regardless of the visitor's colour scheme preference.
  */
 
-.wp-block-code-bin-block-code-bin-block {
-	// Syntax colours, based on microlighter's GitHub light theme.
-	--syntax-background: #fff;
-	--syntax-foreground: #24292f;
-	--syntax-comment: #6e7781;
-	--syntax-keyword: #cf222e;
-	--syntax-operator: #24292f;
-	--syntax-string: #0a3069;
-	--syntax-constant: #0550ae;
-	--syntax-function: #8250df;
-	--syntax-type: #8250df;
-	--syntax-variable: #953800;
-	--syntax-property: #0550ae;
-	--syntax-tag: #116329;
-	--syntax-selector: #8250df;
-	--code-bin-border: #d0d7de;
-	--code-bin-muted: #57606a;
-	--code-bin-chrome: #f6f8fa;
-	--code-bin-font: ui-monospace, sfmono-regular, menlo, consolas, "Liberation Mono", monospace;
+/*
+ * Colour scheme.
+ *
+ * Every value can be changed by themes through custom properties named
+ * `--wp--custom--code-bin-block--{group}--{name}`, eg
+ * `--wp--custom--code-bin-block--syntax--keyword`. Block themes can set them
+ * in theme.json under `settings.custom.codeBinBlock`, any theme can set them
+ * in CSS on `:root`, `body` or the block.
+ *
+ * The defaults are based on microlighter's GitHub light theme.
+ */
+$code-bin-syntax: (
+	"background": #fff,
+	"foreground": #24292f,
+	"comment": #6e7781,
+	"keyword": #cf222e,
+	"operator": #24292f,
+	"string": #0a3069,
+	"constant": #0550ae,
+	"function": #8250df,
+	"type": #8250df,
+	"variable": #953800,
+	"property": #0550ae,
+	"tag": #116329,
+	"selector": #8250df,
+	"selection": rgba(84, 174, 255, 0.4),
+);
 
-	color-scheme: light;
-	background: var(--syntax-background);
-	color: var(--syntax-foreground);
+$code-bin-ui: (
+	"color-scheme": light,
+	"font-family": 'ui-monospace, sfmono-regular, menlo, consolas, "Liberation Mono", monospace',
+	"border": #d0d7de,
+	"divider": #eaeef2,
+	"muted": #57606a,
+	"toolbar": #f6f8fa,
+	"accent": #0969da,
+	"button": #fff,
+	"button-hover": #eef1f4,
+	"warning-background": #fff8c5,
+	"warning-text": #4d2d00,
+	"warning-border": #d4a72c,
+	"error-background": #ffebe9,
+	"error-text": #82071e,
+	"error-border": #ff8182,
+	"error-accent": #cf222e,
+);
+
+.wp-block-code-bin-block-code-bin-block {
+
+	@each $name, $value in $code-bin-syntax {
+		--code-bin-syntax-#{$name}: var(--wp--custom--code-bin-block--syntax--#{$name}, #{$value});
+	}
+
+	@each $name, $value in $code-bin-ui {
+		--code-bin-#{$name}: var(--wp--custom--code-bin-block--ui--#{$name}, #{$value});
+	}
+
+	color-scheme: var(--code-bin-color-scheme);
+	background: var(--code-bin-syntax-background);
+	color: var(--code-bin-syntax-foreground);
 	border: 1px solid var(--code-bin-border);
 	border-radius: 6px;
 	overflow: hidden;
@@ -35,7 +72,7 @@
 	// Front end tabs, styled to match the editor's tabs.
 	.code-bin__tablist {
 		display: flex;
-		background: var(--code-bin-chrome);
+		background: var(--code-bin-toolbar);
 		border-bottom: 1px solid var(--code-bin-border);
 	}
 
@@ -52,16 +89,16 @@
 		cursor: pointer;
 
 		&:hover {
-			color: var(--syntax-foreground);
+			color: var(--code-bin-syntax-foreground);
 		}
 
 		&[aria-selected="true"] {
-			color: var(--syntax-foreground);
-			box-shadow: inset 0 -2px 0 #0969da;
+			color: var(--code-bin-syntax-foreground);
+			box-shadow: inset 0 -2px 0 var(--code-bin-accent);
 		}
 
 		&:focus-visible {
-			outline: 2px solid #0969da;
+			outline: 2px solid var(--code-bin-accent);
 			outline-offset: -2px;
 		}
 	}
@@ -81,7 +118,7 @@
 	}
 
 	.code-bin__label {
-		font-family: var(--code-bin-font);
+		font-family: var(--code-bin-font-family);
 		font-size: 0.75rem;
 		font-weight: 600;
 		letter-spacing: 0.04em;
@@ -96,7 +133,7 @@
 		flex: 1;
 		max-height: 24rem;
 		overflow: auto;
-		background: var(--syntax-background);
+		background: var(--code-bin-syntax-background);
 	}
 
 	.code-bin__code,
@@ -109,7 +146,7 @@
 		padding: 0.75rem;
 		border: 0;
 		border-radius: 0;
-		font-family: var(--code-bin-font);
+		font-family: var(--code-bin-font-family);
 		font-size: 0.8125rem;
 		font-weight: 400;
 		line-height: 1.5;
@@ -120,7 +157,7 @@
 		word-break: normal;
 		text-align: start;
 		background: transparent;
-		color: var(--syntax-foreground);
+		color: var(--code-bin-syntax-foreground);
 	}
 
 	.code-bin__code > code {
@@ -138,7 +175,7 @@
 		outline: none;
 		// Text is drawn by the highlighted <pre> underneath.
 		color: transparent;
-		caret-color: var(--syntax-foreground);
+		caret-color: var(--code-bin-syntax-foreground);
 		box-shadow: none;
 		appearance: none;
 
@@ -147,11 +184,11 @@
 		}
 
 		&::selection {
-			background: rgba(84, 174, 255, 0.4);
+			background: var(--code-bin-syntax-selection);
 		}
 
 		&:focus-visible {
-			box-shadow: inset 0 0 0 2px #0969da;
+			box-shadow: inset 0 0 0 2px var(--code-bin-accent);
 		}
 	}
 
@@ -162,7 +199,7 @@
 		align-items: center;
 		gap: 0.5rem;
 		padding-right: 0.75rem;
-		background: var(--code-bin-chrome);
+		background: var(--code-bin-toolbar);
 		border-bottom: 1px solid var(--code-bin-border);
 
 		.code-bin__tablist {
@@ -179,13 +216,13 @@
 		padding: 0 0.375rem;
 		border-radius: 999px;
 		background: var(--code-bin-border);
-		color: var(--syntax-foreground);
+		color: var(--code-bin-syntax-foreground);
 		font-size: 0.6875rem;
 		line-height: 1.8;
 		text-align: center;
 
 		&.has-errors {
-			background: #cf222e;
+			background: var(--code-bin-error-accent);
 			color: #fff;
 		}
 
@@ -201,8 +238,8 @@
 	.code-bin__console {
 		box-sizing: border-box;
 		overflow: auto;
-		background: var(--syntax-background);
-		font-family: var(--code-bin-font);
+		background: var(--code-bin-syntax-background);
+		font-family: var(--code-bin-font-family);
 		font-size: 0.8125rem;
 		line-height: 1.5;
 
@@ -216,7 +253,7 @@
 
 	.code-bin__console-entry {
 		padding: 0.25rem 0.75rem;
-		border-bottom: 1px solid #eaeef2;
+		border-bottom: 1px solid var(--code-bin-divider);
 		white-space: pre-wrap;
 		overflow-wrap: anywhere;
 
@@ -226,13 +263,13 @@
 		}
 
 		&.is-warn {
-			background: #fff8c5;
-			color: #4d2d00;
+			background: var(--code-bin-warning-background);
+			color: var(--code-bin-warning-text);
 		}
 
 		&.is-error {
-			background: #ffebe9;
-			color: #82071e;
+			background: var(--code-bin-error-background);
+			color: var(--code-bin-error-text);
 		}
 	}
 
@@ -240,34 +277,34 @@
 		padding: 0.25rem 0.75rem;
 		border: 1px solid var(--code-bin-border);
 		border-radius: 4px;
-		background: #fff;
-		color: var(--syntax-foreground);
-		font: 600 0.75rem/1.5 var(--code-bin-font);
+		background: var(--code-bin-button);
+		color: var(--code-bin-syntax-foreground);
+		font: 600 0.75rem/1.5 var(--code-bin-font-family);
 		cursor: pointer;
 
 		&:hover {
-			background: #eef1f4;
+			background: var(--code-bin-button-hover);
 		}
 
 		&:focus-visible {
-			outline: 2px solid #0969da;
+			outline: 2px solid var(--code-bin-accent);
 			outline-offset: 1px;
 		}
 	}
 
 	.code-bin__status {
 		padding: 0.5rem 0.75rem;
-		font-family: var(--code-bin-font);
+		font-family: var(--code-bin-font-family);
 		font-size: 0.8125rem;
-		background: #fff8c5;
-		color: #4d2d00;
-		border-bottom: 1px solid #d4a72c;
+		background: var(--code-bin-warning-background);
+		color: var(--code-bin-warning-text);
+		border-bottom: 1px solid var(--code-bin-warning-border);
 
 		&.is-loop,
 		&.is-error {
-			background: #ffebe9;
-			color: #82071e;
-			border-bottom-color: #ff8182;
+			background: var(--code-bin-error-background);
+			color: var(--code-bin-error-text);
+			border-bottom-color: var(--code-bin-error-border);
 		}
 
 		&[hidden] {
@@ -285,7 +322,7 @@
 	// Syntax highlighting, see https://davatron5000.github.io/microlighter/
 	::highlight(comment),
 	::highlight(quote) {
-		color: var(--syntax-comment);
+		color: var(--code-bin-syntax-comment);
 	}
 
 	::highlight(keyword),
@@ -294,12 +331,12 @@
 	::highlight(doctype),
 	::highlight(important),
 	::highlight(section) {
-		color: var(--syntax-keyword);
+		color: var(--code-bin-syntax-keyword);
 	}
 
 	::highlight(operator),
 	::highlight(punctuation) {
-		color: var(--syntax-operator);
+		color: var(--code-bin-syntax-operator);
 	}
 
 	::highlight(string),
@@ -307,7 +344,7 @@
 	::highlight(attribute-value),
 	::highlight(link),
 	::highlight(raw) {
-		color: var(--syntax-string);
+		color: var(--code-bin-syntax-string);
 	}
 
 	::highlight(numeric),
@@ -317,36 +354,36 @@
 	::highlight(character-entity),
 	::highlight(anchor),
 	::highlight(entity) {
-		color: var(--syntax-constant);
+		color: var(--code-bin-syntax-constant);
 	}
 
 	::highlight(function),
 	::highlight(decorator),
 	::highlight(animation) {
-		color: var(--syntax-function);
+		color: var(--code-bin-syntax-function);
 	}
 
 	::highlight(type),
 	::highlight(support) {
-		color: var(--syntax-type);
+		color: var(--code-bin-syntax-type);
 	}
 
 	::highlight(variable),
 	::highlight(interpolation) {
-		color: var(--syntax-variable);
+		color: var(--code-bin-syntax-variable);
 	}
 
 	::highlight(property),
 	::highlight(key),
 	::highlight(attribute-name) {
-		color: var(--syntax-property);
+		color: var(--code-bin-syntax-property);
 	}
 
 	::highlight(tag) {
-		color: var(--syntax-tag);
+		color: var(--code-bin-syntax-tag);
 	}
 
 	::highlight(selector) {
-		color: var(--syntax-selector);
+		color: var(--code-bin-syntax-selector);
 	}
 }
