@@ -18,6 +18,13 @@
 		}
 	}
 
+	// Marks tabs containing code.
+	.code-bin__has-code {
+		margin-left: 0.25rem;
+		fill: currentcolor;
+		vertical-align: middle;
+	}
+
 	.code-bin__editor {
 		border-bottom: 1px solid var(--code-bin-border);
 	}

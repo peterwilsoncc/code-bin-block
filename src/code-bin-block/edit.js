@@ -9,7 +9,9 @@ import {
 	RangeControl,
 	TabPanel,
 	ToggleControl,
+	VisuallyHidden,
 } from '@wordpress/components';
+import { code as codeIcon, Icon } from '@wordpress/icons';
 import { useEffect, useRef, useState } from '@wordpress/element';
 import { useInstanceId } from '@wordpress/compose';
 
@@ -44,6 +46,40 @@ const PANELS = [
 		placeholder: __( 'Write JavaScript…', 'code-bin-block' ),
 	},
 ];
+
+/**
+ * Title for a code tab, marking tabs that contain code.
+ *
+ * The icon is decorative (hidden from assistive technology); the visually
+ * hidden text gives screen reader users the same information, eg "CSS
+ * (contains code)".
+ *
+ * @param {Object}  props         Props.
+ * @param {string}  props.title   Tab title.
+ * @param {boolean} props.hasCode Whether the panel contains code.
+ * @return {Element} Tab title.
+ */
+function PanelTabTitle( { title, hasCode } ) {
+	if ( ! hasCode ) {
+		return title;
+	}
+
+	return (
+		<>
+			{ title }
+			<Icon
+				icon={ codeIcon }
+				size={ 16 }
+				className="code-bin__has-code"
+			/>
+			{ /* A span: buttons may only contain phrasing content. */ }
+			<VisuallyHidden as="span">
+				{ ' ' }
+				{ __( '(contains code)', 'code-bin-block' ) }
+			</VisuallyHidden>
+		</>
+	);
+}
 
 /**
  * Plain text code input with syntax highlighting.
@@ -310,9 +346,12 @@ export default function Edit( { attributes, setAttributes, clientId, name } ) {
 					activeClass="is-active"
 					tabs={ PANELS.map( ( panel ) => ( {
 						name: panel.name,
-						title: attributes[ panel.name ]
-							? `${ panel.title } •`
-							: panel.title,
+						title: (
+							<PanelTabTitle
+								title={ panel.title }
+								hasCode={ !! attributes[ panel.name ] }
+							/>
+						),
 					} ) ) }
 				>
 					{ ( tab ) => {
