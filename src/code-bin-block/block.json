@@ -6,8 +6,14 @@
 	"title": "Code Bin",
 	"category": "embed",
 	"icon": "code",
-	"description": "Example block scaffolded with Create Block tool.",
-	"example": {},
+	"description": "Write HTML, CSS and JavaScript and show it with a live preview, like CodePen or JS Bin.",
+	"example": {
+		"attributes": {
+			"html": "<button>Click me</button>",
+			"css": "button { font-size: 1.25rem; }",
+			"javascript": "const button = document.querySelector( 'button' );\nbutton.addEventListener( 'click', () => {\n\tbutton.textContent = 'Clicked!';\n} );"
+		}
+	},
 	"attributes": {
 		"html": {
 			"type": "string",
@@ -20,10 +26,22 @@
 		"javascript": {
 			"type": "string",
 			"default": ""
+		},
+		"editable": {
+			"type": "boolean",
+			"default": true
+		},
+		"previewHeight": {
+			"type": "number",
+			"default": 300
 		}
 	},
 	"supports": {
-		"html": false
+		"html": false,
+		"align": [
+			"wide",
+			"full"
+		]
 	},
 	"textdomain": "code-bin-block",
 	"editorScript": "file:./index.js",
