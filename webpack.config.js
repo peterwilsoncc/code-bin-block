@@ -1,10 +1,11 @@
 /**
- * Extends the @wordpress/scripts webpack config for microlighter.
+ * Extends the `@wordpress/scripts` webpack config for microlighter.
  *
  * Microlighter loads grammars with a dynamic `import()`. By default webpack
  * would emit a chunk for each of its ~40 grammars. Instead only the grammars
  * this block uses are included and they are bundled into the main files.
  */
+// eslint-disable-next-line import/no-extraneous-dependencies -- Provided by @wordpress/scripts.
 const webpack = require( 'webpack' );
 const defaultConfig = require( '@wordpress/scripts/config/webpack.config' );
 
@@ -25,7 +26,10 @@ const extendConfig = ( config ) => ( {
 	},
 	plugins: [
 		...config.plugins,
-		new webpack.ContextReplacementPlugin( /microlighter[\\/]dist[\\/]grammars$/, GRAMMARS ),
+		new webpack.ContextReplacementPlugin(
+			/microlighter[\\/]dist[\\/]grammars$/,
+			GRAMMARS
+		),
 	],
 } );
 
