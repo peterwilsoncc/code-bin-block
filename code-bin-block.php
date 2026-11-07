@@ -22,6 +22,7 @@
 namespace PWCC\CodeBinBlock;
 
 const PLUGIN_DIRECTORY = __DIR__;
+const PLUGIN_FILE      = __FILE__;
 
 require_once __DIR__ . '/inc/namespace.php';
 
