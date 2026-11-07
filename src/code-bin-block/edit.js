@@ -21,6 +21,8 @@ import { scheduleHighlight } from './lib/highlight';
 import { createPreview, describeStatus } from './lib/preview';
 import './editor.scss';
 
+/** @typedef {import('./lib/preview').Code} Code */
+
 const PANELS = [
 	{
 		name: 'html',
@@ -48,12 +50,12 @@ const PANELS = [
  * A transparent textarea sits on top of a highlighted <pre><code> containing
  * the same text. The markup matches the front end (see render.php & view.js).
  *
- * @param {Object}   props             Props.
- * @param {string}   props.language    Language for highlighting.
- * @param {string}   props.value       Code.
- * @param {Function} props.onChange    Change handler.
- * @param {string}   props.label       Accessible label.
- * @param {string}   props.placeholder Placeholder.
+ * @param {Object}                  props             Props.
+ * @param {string}                  props.language    Language for highlighting.
+ * @param {string}                  props.value       Code.
+ * @param {(value: string) => void} props.onChange    Change handler.
+ * @param {string}                  props.label       Accessible label.
+ * @param {string}                  props.placeholder Placeholder.
  * @return {Element} Code input.
  */
 function CodeInput( { language, value, onChange, label, placeholder } ) {
@@ -99,7 +101,7 @@ const OUTPUT_TABS = [
  * tabs: the iframe must stay mounted to keep running.
  *
  * @param {Object} props        Props.
- * @param {Object} props.code   Code panels.
+ * @param {Code}   props.code   Code panels.
  * @param {number} props.height Preview height.
  * @return {Element} Preview.
  */
@@ -255,9 +257,9 @@ function Preview( { code, height } ) {
 /**
  * Edit component.
  *
- * @param {Object}   props               Props.
- * @param {Object}   props.attributes    Block attributes.
- * @param {Function} props.setAttributes Attribute setter.
+ * @param {Object}                       props               Props.
+ * @param {Object}                       props.attributes    Block attributes.
+ * @param {(attributes: Object) => void} props.setAttributes Attribute setter.
  * @return {Element} Element to render.
  */
 export default function Edit( { attributes, setAttributes } ) {

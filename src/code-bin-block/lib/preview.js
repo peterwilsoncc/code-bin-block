@@ -30,6 +30,43 @@ const PANEL_LABELS = {
 let instanceCount = 0;
 
 /**
+ * Code from each panel.
+ *
+ * @typedef {Object} Code
+ * @property {string} html       HTML.
+ * @property {string} css        CSS.
+ * @property {string} javascript JavaScript.
+ */
+
+/**
+ * Preview status.
+ *
+ * @typedef {Object} PreviewStatus
+ * @property {'ok'|'syntax'|'loop'|'error'} state     Status.
+ * @property {string}                       [message] Error message.
+ * @property {string|null}                  [panel]   Panel the error came from: html or javascript.
+ * @property {number|null}                  [line]    Line number within the panel.
+ */
+
+/**
+ * Console entry.
+ *
+ * @typedef {Object} ConsoleEntry
+ * @property {string} level Console method: log, info, warn, error or debug.
+ * @property {string} text  Message.
+ */
+
+/**
+ * Preview runner returned by `createPreview()`.
+ *
+ * @typedef {Object} PreviewRunner
+ * @property {(code?: Code) => boolean} run      Run now, resuming live updates. Returns whether the preview updated.
+ * @property {(code: Code) => void}     update   Debounced live update, ignored while paused.
+ * @property {() => boolean}            isPaused Whether live updates are paused.
+ * @property {() => void}               destroy  Remove event listeners.
+ */
+
+/**
  * Runtime injected at the top of the preview document.
  *
  * Written as a string so the build tools can not add helpers or imports to it.
@@ -193,12 +230,9 @@ function protectInlineScripts( html, document ) {
 /**
  * Build the preview document.
  *
- * @param {Object}   code            Code panels.
- * @param {string}   code.html       HTML.
- * @param {string}   code.css        CSS.
- * @param {string}   code.javascript JavaScript.
- * @param {string}   channel         Message channel identifier.
- * @param {Document} document        Document used to parse HTML.
+ * @param {Code}     code     Code panels.
+ * @param {string}   channel  Message channel identifier.
+ * @param {Document} document Document used to parse HTML.
  * @return {string} Document for the iframe's srcdoc attribute.
  * @throws {SyntaxError} If any JavaScript does not parse. `error.panel` holds the panel name.
  */
@@ -283,7 +317,7 @@ export function buildPreviewDocument(
 /**
  * Where an error happened, eg "JavaScript line 3".
  *
- * @param {Object} status Status passed to `onStatus`.
+ * @param {PreviewStatus} status Status passed to `onStatus`.
  * @return {string} Location, empty if unknown.
  */
 function describeLocation( status ) {
@@ -304,8 +338,8 @@ function describeLocation( status ) {
 /**
  * Console entry for an uncaught error or a stopped loop.
  *
- * @param {Object} status Status passed to `onStatus`.
- * @return {{level: string, text: string}} Console entry.
+ * @param {PreviewStatus} status Status passed to `onStatus`.
+ * @return {ConsoleEntry} Console entry.
  */
 function consoleEntryForStatus( status ) {
 	const where = describeLocation( status );
@@ -326,7 +360,7 @@ function consoleEntryForStatus( status ) {
 /**
  * Human readable description of a preview status.
  *
- * @param {Object} status Status passed to `onStatus`.
+ * @param {PreviewStatus} status Status passed to `onStatus`.
  * @return {string} Description, empty when the preview is running normally.
  */
 export function describeStatus( status ) {
@@ -393,16 +427,15 @@ export function describeStatus( status ) {
 /**
  * Create a preview runner for an iframe.
  *
- * @param {HTMLIFrameElement} iframe            Preview iframe.
- * @param {Object}            options           Options.
- * @param {Function}          options.onStatus  Called with `{ state, message?, panel?, line? }`.
- *                                              States: ok, syntax, loop, error.
- * @param {Function}          options.onConsole Called with `{ level, text }` for each console message,
- *                                              uncaught error or stopped loop.
- * @param {Function}          options.onClear   Called when the console should be cleared: when the
- *                                              code is run and when it calls `console.clear()`.
- * @param {number}            options.delay     Debounce delay for `update()` in ms.
- * @return {{run: Function, update: Function, isPaused: Function, destroy: Function}} Runner.
+ * @param {HTMLIFrameElement}               iframe            Preview iframe.
+ * @param {Object}                          options           Options.
+ * @param {(status: PreviewStatus) => void} options.onStatus  Called when the status changes.
+ * @param {(entry: ConsoleEntry) => void}   options.onConsole Called for each console message,
+ *                                                            uncaught error or stopped loop.
+ * @param {() => void}                      options.onClear   Called when the console should be cleared: when the
+ *                                                            code is run and when it calls `console.clear()`.
+ * @param {number}                          options.delay     Debounce delay for `update()` in ms.
+ * @return {PreviewRunner} Runner.
  */
 export function createPreview(
 	iframe,
@@ -463,7 +496,7 @@ export function createPreview(
 	/**
 	 * Run the code now, resuming live updates if they were paused.
 	 *
-	 * @param {Object} code Code panels.
+	 * @param {Code} code Code panels.
 	 * @return {boolean} Whether the preview was updated.
 	 */
 	const run = ( code = latest ) => {
@@ -509,7 +542,7 @@ export function createPreview(
 	/**
 	 * Debounced update for live previews. Ignored while paused.
 	 *
-	 * @param {Object} code Code panels.
+	 * @param {Code} code Code panels.
 	 */
 	const update = ( code ) => {
 		latest = code;

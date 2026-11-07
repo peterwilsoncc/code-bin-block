@@ -3,7 +3,7 @@
  *
  * Inspired by JS Bin's loop-protect (https://github.com/jsbin/loop-protect).
  * That package is now a Babel plugin, so it would require shipping
- * @babel/standalone (~3MB) to the browser. Acorn does the same job: parse the
+ * `@babel/standalone` (~3MB) to the browser. Acorn does the same job: parse the
  * code, find every loop and insert a guard at the top of each loop body.
  *
  *     while ( true ) { doThing(); }

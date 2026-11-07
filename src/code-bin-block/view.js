@@ -13,13 +13,15 @@ import { createConsoleView } from './lib/console';
 import { scheduleHighlight } from './lib/highlight';
 import { createPreview, describeStatus } from './lib/preview';
 
+/** @typedef {import('./lib/preview').Code} Code */
+
 const PANEL_NAMES = [ 'html', 'css', 'javascript' ];
 
 /**
  * Read the code from each panel.
  *
- * @param {Map<string, Function>} readers Panel name => function returning the panel's code.
- * @return {Object} Code panels.
+ * @param {Map<string, () => string>} readers Panel name => function returning the panel's code.
+ * @return {Code} Code panels.
  */
 function readCode( readers ) {
 	return Object.fromEntries(
@@ -31,8 +33,8 @@ function readCode( readers ) {
  * Make a panel editable by layering a textarea over the highlighted code.
  *
  * @param {HTMLElement} panel    Panel element.
- * @param {Function}    onChange Called after the code changes.
- * @return {{read: Function, reset: Function}} Panel controls.
+ * @param {() => void}  onChange Called after the code changes.
+ * @return {{read: () => string, reset: () => void}} Panel controls.
  */
 function makeEditable( panel, onChange ) {
 	const editor = panel.querySelector( '.code-bin__editor' );
@@ -126,8 +128,8 @@ function initTabs( tablist ) {
 /**
  * Create a toolbar button.
  *
- * @param {string}   text    Button text.
- * @param {Function} onClick Click handler.
+ * @param {string}     text    Button text.
+ * @param {() => void} onClick Click handler.
  * @return {HTMLButtonElement} Button.
  */
 function createButton( text, onClick ) {

@@ -2,6 +2,8 @@
  * Console output for the preview.
  */
 
+/** @typedef {import('./preview').ConsoleEntry} ConsoleEntry */
+
 // Oldest entries are dropped beyond this, eg when code logs in a fast interval.
 export const MAX_CONSOLE_ENTRIES = 500;
 
@@ -10,7 +12,7 @@ export const MAX_CONSOLE_ENTRIES = 500;
  *
  * @param {HTMLElement}      container Console element.
  * @param {HTMLElement|null} counter   Element showing the number of entries.
- * @return {{add: Function, clear: Function}} Console view.
+ * @return {{add: (entry: ConsoleEntry) => void, clear: () => void}} Console view.
  */
 export function createConsoleView( container, counter ) {
 	const doc = container.ownerDocument;
