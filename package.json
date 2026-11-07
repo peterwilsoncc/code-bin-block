@@ -19,7 +19,6 @@
 		"@wordpress/scripts": "^36.0.0"
 	},
 	"dependencies": {
-		"@wordpress/i18n": "^6.30.0",
 		"acorn": "^8.19.0",
 		"acorn-walk": "^8.3.5",
 		"microlighter": "^2.2.0"
