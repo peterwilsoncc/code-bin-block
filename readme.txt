@@ -1,7 +1,7 @@
 === Code Bin Block ===
 Contributors: peterwilsoncc
 Tags:
-Tested up to: 7.0
+Tested up to: 7.2
 Stable tag: 1.0.0
 License: MIT
 License URI: https://github.com/peterwilsoncc/code-bin-block/blob/main/LICENSE
