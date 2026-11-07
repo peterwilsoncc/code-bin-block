@@ -23,8 +23,8 @@
 		"start": "wp-scripts start --webpack-copy-php --blocks-manifest"
 	},
 	"devDependencies": {
-		"@wordpress/icons": "^17.0.0",
-		"@wordpress/scripts": "^36.0.0"
+		"@wordpress/icons": "^20.0.0",
+		"@wordpress/scripts": "^37.1.0"
 	},
 	"dependencies": {
 		"acorn": "^8.19.0",
