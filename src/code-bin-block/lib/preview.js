@@ -25,7 +25,7 @@ import { MAX_CONSOLE_ENTRIES } from './console';
 import { GUARD_NAME, protectLoops } from './loop-protect';
 
 const LOOP_TIMEOUT = 1000;
-const MESSAGE_KEY = 'codeBinPreview';
+const MESSAGE_KEY = 'codeBinBlockPreview';
 const PANEL_LABELS = {
 	html: 'HTML',
 	css: 'CSS',
@@ -271,16 +271,18 @@ function protectInlineScripts( html, document ) {
 /**
  * Build the preview document.
  *
- * @param {Code}     code     Code panels.
- * @param {string}   channel  Message channel identifier.
- * @param {Document} document Document used to parse HTML.
+ * @param {Code}     code       Code panels.
+ * @param {string}   channel    Message channel identifier.
+ * @param {Document} document   Document used to parse HTML.
+ * @param {string}   baseStyles Base styles for the preview, not shown in the CSS panel.
  * @return {string} Document for the iframe's srcdoc attribute.
  * @throws {SyntaxError} If any JavaScript does not parse. `error.panel` holds the panel name.
  */
 export function buildPreviewDocument(
 	{ html = '', css = '', javascript = '' },
 	channel,
-	document = window.document
+	document = window.document,
+	baseStyles = ''
 ) {
 	let protectedHtml;
 	let script = null;
@@ -305,7 +307,11 @@ export function buildPreviewDocument(
 		'<!DOCTYPE html><html><head><meta charset="utf-8">' +
 		'<meta name="viewport" content="width=device-width, initial-scale=1">' +
 		'<meta name="color-scheme" content="light">' +
-		'<style>:root{color-scheme:light;background:#fff;color:#000}</style>' +
+		// In a cascade layer so the author's CSS always takes precedence.
+		// Keep in sync with get_preview_styles_element() in inc/namespace.php.
+		( baseStyles.trim()
+			? `<style>@layer code-bin-base{\n${ escapeClosingTag( baseStyles, 'style' ) }\n}</style>`
+			: '' ) +
 		'<script>' +
 		RUNTIME +
 		'</script>' +
@@ -469,14 +475,15 @@ export function describeStatus( status ) {
 /**
  * Create a preview runner for an iframe.
  *
- * @param {HTMLIFrameElement}               iframe            Preview iframe.
- * @param {Object}                          options           Options.
- * @param {(status: PreviewStatus) => void} options.onStatus  Called when the status changes.
- * @param {(entry: ConsoleEntry) => void}   options.onConsole Called for each console message,
- *                                                            uncaught error or stopped loop.
- * @param {() => void}                      options.onClear   Called when the console should be cleared: when the
- *                                                            code is run and when it calls `console.clear()`.
- * @param {number}                          options.delay     Debounce delay for `update()` in ms.
+ * @param {HTMLIFrameElement}               iframe             Preview iframe.
+ * @param {Object}                          options            Options.
+ * @param {(status: PreviewStatus) => void} options.onStatus   Called when the status changes.
+ * @param {(entry: ConsoleEntry) => void}   options.onConsole  Called for each console message,
+ *                                                             uncaught error or stopped loop.
+ * @param {() => void}                      options.onClear    Called when the console should be cleared: when the
+ *                                                             code is run and when it calls `console.clear()`.
+ * @param {number}                          options.delay      Debounce delay for `update()` in ms.
+ * @param {string}                          options.baseStyles Base styles for the preview, not shown in the CSS panel.
  * @return {PreviewRunner} Runner.
  */
 export function createPreview(
@@ -486,6 +493,7 @@ export function createPreview(
 		onConsole = () => {},
 		onClear = () => {},
 		delay = 500,
+		baseStyles = '',
 	} = {}
 ) {
 	// The iframe may live inside the block editor's iframe, so listen on its own window.
@@ -579,7 +587,8 @@ export function createPreview(
 			srcdoc = buildPreviewDocument(
 				code,
 				nextChannel,
-				iframe.ownerDocument
+				iframe.ownerDocument,
+				baseStyles
 			);
 		} catch ( error ) {
 			if ( ! ( error instanceof SyntaxError ) ) {

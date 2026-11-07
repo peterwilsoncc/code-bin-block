@@ -5,11 +5,11 @@
  * @package CodeBinBlock
  */
 
-namespace PWCC\CodeBinBlock\Tests;
+namespace CodeBinBlock\Tests;
 
 use WP_UnitTestCase;
 
-use const PWCC\CodeBinBlock\PLUGIN_VERSION;
+use const CodeBinBlock\PLUGIN_VERSION;
 
 /**
  * Test Plugin Readme and PHP Headers

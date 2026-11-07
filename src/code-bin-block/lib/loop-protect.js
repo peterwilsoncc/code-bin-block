@@ -10,7 +10,7 @@
  *
  * becomes
  *
- *     while ( true ) {if(__codeBinLoopGuard(1,"javascript"))break; doThing(); }
+ *     while ( true ) {if(__codeBinBlockLoopGuard(1,"javascript"))break; doThing(); }
  *
  * No new lines are inserted so line numbers in error messages still match the
  * code the author wrote.
@@ -20,7 +20,7 @@
 import { parse } from 'acorn';
 import { simple as walk } from 'acorn-walk';
 
-export const GUARD_NAME = '__codeBinLoopGuard';
+export const GUARD_NAME = '__codeBinBlockLoopGuard';
 
 const LOOP_TYPES = [
 	'ForStatement',

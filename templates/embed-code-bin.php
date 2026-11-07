@@ -15,7 +15,7 @@
  * phpcs:disable WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound -- Templates are included within a function.
  */
 
-namespace PWCC\CodeBinBlock;
+namespace CodeBinBlock;
 
 if ( ! have_posts() ) {
 	get_header( 'embed' );

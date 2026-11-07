@@ -5,7 +5,7 @@
  * @package CodeBinBlock
  */
 
-namespace PWCC\CodeBinBlock\Tests;
+namespace CodeBinBlock\Tests;
 
 use WP_UnitTestCase;
 

@@ -5,7 +5,7 @@
  * @package           CodeBinBlock
  */
 
-namespace PWCC\CodeBinBlock;
+namespace CodeBinBlock;
 
 const PLUGIN_VERSION = '1.0.0';
 
@@ -23,6 +23,7 @@ function bootstrap() {
 	add_filter( 'block_editor_settings_all', __NAMESPACE__ . '\\filter_block_editor_settings', 10, 2 );
 	add_filter( 'embed_template', __NAMESPACE__ . '\\filter_embed_template' );
 	add_filter( 'embed_html', __NAMESPACE__ . '\\filter_embed_html', 10, 2 );
+	add_action( 'enqueue_block_editor_assets', __NAMESPACE__ . '\\add_editor_preview_styles' );
 
 	register_activation_hook( PLUGIN_FILE, __NAMESPACE__ . '\\activate' );
 	register_deactivation_hook( PLUGIN_FILE, 'flush_rewrite_rules' );
@@ -138,6 +139,79 @@ function filter_block_editor_settings( $settings, $block_editor_context ) {
 	$settings['codeEditingEnabled'] = false;
 
 	return $settings;
+}
+
+/**
+ * Get the base styles for the preview.
+ *
+ * The styles are added to the preview document before the code bin's own CSS
+ * in a cascade layer, so the code bin's CSS always takes precedence regardless
+ * of specificity. They are not shown in the CSS panel.
+ *
+ * @return string CSS.
+ */
+function get_preview_styles() {
+	$styles = <<<'CSS'
+:root {
+	color-scheme: light;
+	background: #fff;
+	color: #1e1e1e;
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+	font-size: 16px;
+	line-height: 1.5;
+}
+body {
+	margin: 1rem;
+}
+img,
+video {
+	max-width: 100%;
+	height: auto;
+}
+CSS;
+
+	/**
+	 * Filters the base styles of the Code Bin preview.
+	 *
+	 * Use this to make previews match the site's design, eg the fonts and
+	 * colors. The styles are placed in the `code-bin-base` cascade layer
+	 * before the code bin's own CSS, which always takes precedence.
+	 *
+	 * @param string $styles CSS.
+	 */
+	$styles = apply_filters( 'code_bin_block_preview_styles', $styles );
+
+	return is_string( $styles ) ? $styles : '';
+}
+
+/**
+ * Wrap the preview's base styles in a style element for the preview document.
+ *
+ * Keep in sync with `buildPreviewDocument()` in lib/preview.js.
+ *
+ * @param string $styles Base styles from get_preview_styles().
+ * @return string Style element, empty if there are no styles.
+ */
+function get_preview_styles_element( $styles ) {
+	if ( '' === trim( $styles ) ) {
+		return '';
+	}
+
+	// Stop the styles closing the style element early, `\/` is a valid escape in CSS.
+	$styles = preg_replace( '#</(style)#i', '<\\\\/$1', $styles );
+
+	return "<style>@layer code-bin-base{\n{$styles}\n}</style>";
+}
+
+/**
+ * Pass the preview's base styles to the block editor.
+ */
+function add_editor_preview_styles() {
+	wp_add_inline_script(
+		generate_block_asset_handle( BLOCK_NAME, 'editorScript' ),
+		'window.codeBinBlock = Object.assign( window.codeBinBlock || {}, ' . wp_json_encode( array( 'previewStyles' => get_preview_styles() ) ) . ' );',
+		'before'
+	);
 }
 
 /**

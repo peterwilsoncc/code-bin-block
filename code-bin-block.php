@@ -19,7 +19,7 @@
  * Text Domain: code-bin-block
  */
 
-namespace PWCC\CodeBinBlock;
+namespace CodeBinBlock;
 
 const PLUGIN_DIRECTORY = __DIR__;
 const PLUGIN_FILE      = __FILE__;

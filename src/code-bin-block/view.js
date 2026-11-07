@@ -155,7 +155,7 @@ function initBlock( block ) {
 	const status = block.querySelector( '.code-bin__status' );
 	const toolbar = block.querySelector( '.code-bin__toolbar' );
 	const panels = [ ...block.querySelectorAll( '.code-bin__panel' ) ];
-	const editable = block.dataset.codeBinEditable === 'true';
+	const editable = block.dataset.codeBinBlockEditable === 'true';
 	const readers = new Map();
 	const resetters = [];
 
@@ -175,6 +175,7 @@ function initBlock( block ) {
 		},
 		onConsole: consoleView.add,
 		onClear: consoleView.clear,
+		baseStyles: block.dataset.codeBinBlockPreviewStyles || '',
 	} );
 
 	const onChange = () => preview.update( readCode( readers ) );

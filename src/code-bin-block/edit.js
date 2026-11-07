@@ -162,6 +162,8 @@ function Preview( { code, height } ) {
 					[ ...current, entry ].slice( -MAX_CONSOLE_ENTRIES )
 				),
 			onClear: () => setEntries( [] ),
+			// Filterable on the server, see get_preview_styles().
+			baseStyles: window.codeBinBlock?.previewStyles || '',
 		} );
 		previewRef.current = preview;
 		preview.run( codeRef.current );

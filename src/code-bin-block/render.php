@@ -33,7 +33,7 @@ if ( '' === trim( implode( '', $code ) ) ) {
 	return;
 }
 
-$anchor = \PWCC\CodeBinBlock\get_block_anchor( $attributes );
+$anchor = \CodeBinBlock\get_block_anchor( $attributes );
 
 /*
  * Feed readers strip the scripts and most of the markup, so link to the block
@@ -51,8 +51,10 @@ if ( is_feed() ) {
 $preview_height = isset( $attributes['previewHeight'] ) ? absint( $attributes['previewHeight'] ) : 300;
 $editable       = ! empty( $attributes['editable'] );
 
+$preview_styles = \CodeBinBlock\get_preview_styles();
+
 $srcdoc  = '<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">';
-$srcdoc .= '<meta name="color-scheme" content="light"><style>:root{color-scheme:light;background:#fff;color:#000}</style>';
+$srcdoc .= '<meta name="color-scheme" content="light">' . \CodeBinBlock\get_preview_styles_element( $preview_styles );
 if ( '' !== trim( $code['css'] ) ) {
 	$srcdoc .= '<style>' . $code['css'] . '</style>';
 }
@@ -70,11 +72,14 @@ foreach ( $panels as $panel => $label ) {
 $id_prefix = wp_unique_id( 'code-bin-' );
 
 $extra_attributes = array(
-	'class'                  => 'code-bin',
-	'data-code-bin-editable' => $editable ? 'true' : 'false',
+	'class'                        => 'code-bin',
+	'data-code-bin-block-editable' => $editable ? 'true' : 'false',
 );
+if ( '' !== trim( $preview_styles ) ) {
+	$extra_attributes['data-code-bin-block-preview-styles'] = $preview_styles;
+}
 // Saved anchors are output by the anchor block support.
-if ( ! \PWCC\CodeBinBlock\has_saved_anchor( $attributes ) && \PWCC\CodeBinBlock\reserve_block_anchor( $anchor ) ) {
+if ( ! \CodeBinBlock\has_saved_anchor( $attributes ) && \CodeBinBlock\reserve_block_anchor( $anchor ) ) {
 	$extra_attributes['id'] = $anchor;
 }
 

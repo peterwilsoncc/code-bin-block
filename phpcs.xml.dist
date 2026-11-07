@@ -19,16 +19,17 @@
 	<!-- Rules: WordPress Coding Standards -->
 	<config name="minimum_supported_wp_version" value="6.0"/>
 	<rule ref="WordPress">
-		<!-- Namespace includes a vendor prefix -->
-		<exclude name="WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedNamespaceFound"/>
-
 		<!-- sanitize_url() was undprected in WordPress 5.9.0 -->
 		<exclude name="WordPress.WP.DeprecatedFunctions.sanitize_urlFound"/>
 	</rule>
 	<rule ref="WordPress.NamingConventions.PrefixAllGlobals">
 		<properties>
-			<!-- Value: replace the function, class, and variable prefixes used. Separate multiple prefixes with a comma. -->
-			<property name="prefixes" type="array" value="pwcc_,_pwcc_"/>
+			<!-- Function, class, variable and hook prefixes, and the namespace. -->
+			<property name="prefixes" type="array">
+				<element value="code_bin_block_"/>
+				<element value="_code_bin_block_"/>
+				<element value="CodeBinBlock"/>
+			</property>
 		</properties>
 	</rule>
 	<rule ref="WordPress.WP.I18n">
