@@ -5,6 +5,14 @@
 	"author": "The WordPress Contributors",
 	"license": "GPL-2.0-or-later",
 	"main": "build/index.js",
+	"files": [
+		"build",
+		"inc",
+		"templates",
+		"code-bin-block.php",
+		"readme.txt",
+		"LICENSE"
+	],
 	"scripts": {
 		"build": "wp-scripts build --webpack-copy-php --blocks-manifest",
 		"format": "wp-scripts format",
