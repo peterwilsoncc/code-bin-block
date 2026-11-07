@@ -189,3 +189,63 @@ function filter_embed_html( $output, $post ) {
 
 	return preg_replace( '/(<iframe\b[^>]*?\swidth=")\d+(")/i', '${1}100%${2}', $output, 1 );
 }
+
+/**
+ * Whether a Code Bin block has an anchor saved in its attributes.
+ *
+ * The editor gives each block a random anchor (WordPress 7.0+). Block support
+ * outputs it as the block's ID.
+ *
+ * @param array $attributes Block attributes.
+ * @return bool Whether the block has a saved anchor.
+ */
+function has_saved_anchor( $attributes ) {
+	return isset( $attributes['anchor'] ) && is_string( $attributes['anchor'] ) && '' !== $attributes['anchor'];
+}
+
+/**
+ * Get the anchor (HTML ID) for a Code Bin block.
+ *
+ * Feeds link to the block using this anchor, so it must be the same when the
+ * post is rendered in a feed and on the site.
+ *
+ * Blocks saved without an anchor (eg before the editor generated them, on
+ * WordPress before 7.0, or created outside the editor) fall back to an anchor
+ * based on the block's code: changing the code changes that anchor.
+ *
+ * @param array $attributes Block attributes.
+ * @return string Anchor.
+ */
+function get_block_anchor( $attributes ) {
+	if ( has_saved_anchor( $attributes ) ) {
+		return $attributes['anchor'];
+	}
+
+	$code = array();
+	foreach ( array( 'html', 'css', 'javascript' ) as $panel ) {
+		$code[ $panel ] = isset( $attributes[ $panel ] ) ? (string) $attributes[ $panel ] : '';
+	}
+
+	return 'code-bin-' . substr( md5( wp_json_encode( $code ) ), 0, 8 );
+}
+
+/**
+ * Reserve an anchor for use on the current page.
+ *
+ * Used for anchors based on the block's code: blocks with identical code share
+ * an anchor and posts can be rendered more than once per page, so only the
+ * first block to use an anchor gets it. This avoids duplicate IDs on the page.
+ *
+ * @param string $anchor Anchor.
+ * @return bool Whether the anchor was available.
+ */
+function reserve_block_anchor( $anchor ) {
+	static $used = array();
+
+	if ( isset( $used[ $anchor ] ) ) {
+		return false;
+	}
+
+	$used[ $anchor ] = true;
+	return true;
+}

@@ -41,7 +41,8 @@
 		"align": [
 			"wide",
 			"full"
-		]
+		],
+		"anchor": true
 	},
 	"textdomain": "code-bin-block",
 	"editorScript": "file:./index.js",

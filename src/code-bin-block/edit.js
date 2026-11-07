@@ -19,6 +19,7 @@ import { useInstanceId } from '@wordpress/compose';
 import { MAX_CONSOLE_ENTRIES } from './lib/console';
 import { scheduleHighlight } from './lib/highlight';
 import { createPreview, describeStatus } from './lib/preview';
+import useGeneratedAnchor from './lib/use-generated-anchor';
 import './editor.scss';
 
 /** @typedef {import('./lib/preview').Code} Code */
@@ -260,10 +261,15 @@ function Preview( { code, height } ) {
  * @param {Object}                       props               Props.
  * @param {Object}                       props.attributes    Block attributes.
  * @param {(attributes: Object) => void} props.setAttributes Attribute setter.
+ * @param {string}                       props.clientId      Block client ID.
+ * @param {string}                       props.name          Block name.
  * @return {Element} Element to render.
  */
-export default function Edit( { attributes, setAttributes } ) {
-	const { html, css, javascript, editable, previewHeight } = attributes;
+export default function Edit( { attributes, setAttributes, clientId, name } ) {
+	const { html, css, javascript, editable, previewHeight, anchor } =
+		attributes;
+
+	useGeneratedAnchor( { clientId, name, anchor, setAttributes } );
 
 	return (
 		<>
@@ -311,7 +317,7 @@ export default function Edit( { attributes, setAttributes } ) {
 				>
 					{ ( tab ) => {
 						const panel = PANELS.find(
-							( { name } ) => name === tab.name
+							( item ) => item.name === tab.name
 						);
 						return (
 							<CodeInput

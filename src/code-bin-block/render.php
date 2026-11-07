@@ -5,6 +5,8 @@
  * Outputs tabs containing the code as escaped text, followed by a preview
  * iframe. Every tab is shown, even when it contains no code.
  *
+ * In feeds, a link to the block on the site is output instead.
+ *
  * The iframe is rendered with an empty sandbox (scripts disabled) and only the
  * HTML and CSS. The view script adds loop protection to the JavaScript and
  * then re-renders the preview with scripts enabled. This prevents an infinite
@@ -31,6 +33,21 @@ if ( '' === trim( implode( '', $code ) ) ) {
 	return;
 }
 
+$anchor = \PWCC\CodeBinBlock\get_block_anchor( $attributes );
+
+/*
+ * Feed readers strip the scripts and most of the markup, so link to the block
+ * on the site instead.
+ */
+if ( is_feed() ) {
+	printf(
+		'<p><a href="%s">%s</a></p>',
+		esc_url( get_permalink() . '#' . $anchor ),
+		esc_html__( 'View the code and live preview on the website.', 'code-bin-block' )
+	);
+	return;
+}
+
 $preview_height = isset( $attributes['previewHeight'] ) ? absint( $attributes['previewHeight'] ) : 300;
 $editable       = ! empty( $attributes['editable'] );
 
@@ -52,12 +69,16 @@ foreach ( $panels as $panel => $label ) {
 
 $id_prefix = wp_unique_id( 'code-bin-' );
 
-$wrapper_attributes = get_block_wrapper_attributes(
-	array(
-		'class'                  => 'code-bin',
-		'data-code-bin-editable' => $editable ? 'true' : 'false',
-	)
+$extra_attributes = array(
+	'class'                  => 'code-bin',
+	'data-code-bin-editable' => $editable ? 'true' : 'false',
 );
+// Saved anchors are output by the anchor block support.
+if ( ! \PWCC\CodeBinBlock\has_saved_anchor( $attributes ) && \PWCC\CodeBinBlock\reserve_block_anchor( $anchor ) ) {
+	$extra_attributes['id'] = $anchor;
+}
+
+$wrapper_attributes = get_block_wrapper_attributes( $extra_attributes );
 ?>
 <div <?php echo $wrapper_attributes; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped by core. ?>>
 	<div class="code-bin__tablist" role="tablist" aria-label="<?php esc_attr_e( 'Code', 'code-bin-block' ); ?>">
