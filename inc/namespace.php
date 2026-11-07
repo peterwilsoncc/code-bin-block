@@ -21,6 +21,8 @@ function bootstrap() {
 	add_action( 'init', __NAMESPACE__ . '\\register_post_type' );
 	add_filter( 'allowed_block_types_all', __NAMESPACE__ . '\\filter_allowed_block_types', 10, 2 );
 	add_filter( 'block_editor_settings_all', __NAMESPACE__ . '\\filter_block_editor_settings', 10, 2 );
+	add_filter( 'embed_template', __NAMESPACE__ . '\\filter_embed_template' );
+	add_filter( 'embed_html', __NAMESPACE__ . '\\filter_embed_html', 10, 2 );
 
 	register_activation_hook( PLUGIN_FILE, __NAMESPACE__ . '\\activate' );
 	register_deactivation_hook( PLUGIN_FILE, 'flush_rewrite_rules' );
@@ -136,4 +138,54 @@ function filter_block_editor_settings( $settings, $block_editor_context ) {
 	$settings['codeEditingEnabled'] = false;
 
 	return $settings;
+}
+
+/**
+ * Use a custom oEmbed template for code bins.
+ *
+ * WordPress is an oEmbed provider: embedding a code bin's URL on another site
+ * loads the code bin's `/embed/` URL in an iframe. The plugin's template shows
+ * the Code Bin block (code and preview) only.
+ *
+ * Themes can provide their own `embed-code_bin.php` template to override it.
+ *
+ * @param string $template Path to the embed template.
+ * @return string Path to the embed template.
+ */
+function filter_embed_template( $template ) {
+	if ( ! is_singular( POST_TYPE ) ) {
+		return $template;
+	}
+
+	if ( $template && str_starts_with( basename( $template ), 'embed-' . POST_TYPE ) ) {
+		return $template;
+	}
+
+	return PLUGIN_DIRECTORY . '/templates/embed-code-bin.php';
+}
+
+/**
+ * Make code bin embeds fill the width available on the embedding site.
+ *
+ * Sites embedding a WordPress post set the iframe's width to their content
+ * width, or 500px if the theme doesn't define one, and WordPress limits the
+ * width in the oEmbed response to 600px. Code bins need more room, so the
+ * iframe's width is set to 100% instead.
+ *
+ * Embedding sites strip `style` attributes from the iframe but keep `width`,
+ * which browsers accept as a percentage.
+ *
+ * Sites that have already embedded a code bin cache the HTML in post meta:
+ * the change applies to them when the cache expires (a day by default).
+ *
+ * @param string   $output Embed HTML.
+ * @param \WP_Post $post   Post being embedded.
+ * @return string Embed HTML.
+ */
+function filter_embed_html( $output, $post ) {
+	if ( POST_TYPE !== get_post_type( $post ) ) {
+		return $output;
+	}
+
+	return preg_replace( '/(<iframe\b[^>]*?\swidth=")\d+(")/i', '${1}100%${2}', $output, 1 );
 }
