@@ -8,15 +8,20 @@
  * Fatal error protection:
  * - JavaScript that does not parse is never run (the last good preview stays).
  * - Loops are guarded (see loop-protect.js) and break after LOOP_TIMEOUT ms of
- *   synchronous looping. Once tripped, every loop in the document breaks.
+ *   synchronous looping. Once tripped, every loop in the document breaks and
+ *   the preview document is hidden so anything the loop created (eg millions
+ *   of elements) is never laid out.
+ * - Console output is batched and capped at MAX_CONSOLE_ENTRIES per batch so
+ *   a loop that logs on every iteration can not flood and freeze the parent.
  * - Uncaught errors and unhandled rejections are reported to the parent with
  *   postMessage.
  *
  * When a loop or runtime error is reported, live updates pause until `run()`
  * is called explicitly (eg the author clicks "Run").
  */
-import { __, sprintf } from '@wordpress/i18n';
+import { __, _n, sprintf } from '@wordpress/i18n';
 
+import { MAX_CONSOLE_ENTRIES } from './console';
 import { GUARD_NAME, protectLoops } from './loop-protect';
 
 const LOOP_TIMEOUT = 1000;
@@ -74,9 +79,41 @@ let instanceCount = 0;
  */
 const RUNTIME = `(function(config){
 	var started = 0, tripped = false;
-	function send(data){
+	var queue = [], dropped = 0, logged = 0, flushTimer = null, max = config.maxEntries;
+	function post(data){
 		data.${ MESSAGE_KEY } = config.channel;
 		try { parent.postMessage(data, '*'); } catch (e) {}
+	}
+	function flush(){
+		clearTimeout(flushTimer);
+		flushTimer = null;
+		logged = 0;
+		if (!queue.length) { return; }
+		trim(max);
+		// Leave room in the parent's console for the "not shown" notice and
+		// the loop or error notice that usually follows.
+		if (dropped) { trim(max - 2); }
+		post({ type: 'console', entries: queue, dropped: dropped });
+		queue = [];
+		dropped = 0;
+	}
+	function trim(size){
+		if (queue.length > size) {
+			dropped += queue.length - size;
+			queue = queue.slice(-size);
+		}
+	}
+	function send(data){
+		// Console output comes first so it appears before the error or loop notice.
+		flush();
+		post(data);
+	}
+	// Console output is batched: a loop that logs on every iteration would
+	// otherwise flood the parent with messages and freeze the page.
+	function log(level, text){
+		queue.push({ level: level, text: text });
+		if (queue.length > max * 2) { trim(max); }
+		if (!flushTimer) { flushTimer = setTimeout(flush, 0); }
 	}
 	function locate(lineno){
 		for (var i = 0; i < config.ranges.length; i++) {
@@ -96,6 +133,9 @@ const RUNTIME = `(function(config){
 		}
 		if (now - started > config.timeout) {
 			tripped = true;
+			// Hide the document before the browser renders again: a loop adding
+			// elements creates millions of them and laying them out freezes the page.
+			try { document.documentElement.style.setProperty('display', 'none', 'important'); } catch (e) {}
 			send({ type: 'loop', panel: panel, line: line });
 			return true;
 		}
@@ -147,11 +187,12 @@ const RUNTIME = `(function(config){
 		console[level] = function(){
 			var parts = [];
 			for (var i = 0; i < arguments.length; i++) { parts.push(describe(arguments[i], 0, [])); }
-			send({ type: 'console', level: level, text: parts.join(' ') });
-			if (original) { return original.apply(console, arguments); }
+			log(level, parts.join(' '));
+			// A loop logging thousands of messages can hang the browser's own dev tools.
+			if (original && ++logged <= max) { return original.apply(console, arguments); }
 		};
 	});
-	console.clear = function(){ send({ type: 'console-clear' }); };
+	console.clear = function(){ queue = []; dropped = 0; send({ type: 'console-clear' }); };
 	window.addEventListener('error', function(event){
 		var where = locate(event.lineno);
 		send({ type: 'error', message: String(event.message), panel: where.panel, line: where.line });
@@ -300,6 +341,7 @@ export function buildPreviewDocument(
 		channel,
 		ranges,
 		timeout: LOOP_TIMEOUT,
+		maxEntries: MAX_CONSOLE_ENTRIES,
 	} ).replace( /</g, '\\u003c' );
 
 	return (
@@ -468,10 +510,34 @@ export function createPreview(
 			return;
 		}
 
-		const { type, level, text, message, panel, line } = event.data;
+		const { type, entries, dropped, message, panel, line } = event.data;
 
 		if ( type === 'console' ) {
-			onConsole( { level: String( level ), text: String( text ) } );
+			if ( ! Array.isArray( entries ) ) {
+				return;
+			}
+			const hidden = Number( dropped ) || 0;
+			if ( hidden > 0 ) {
+				onConsole( {
+					level: 'info',
+					text: sprintf(
+						/* translators: %d: Number of console messages. */
+						_n(
+							'%d earlier message was not shown.',
+							'%d earlier messages were not shown.',
+							hidden,
+							'code-bin-block'
+						),
+						hidden
+					),
+				} );
+			}
+			for ( const entry of entries ) {
+				onConsole( {
+					level: String( entry?.level ),
+					text: String( entry?.text ),
+				} );
+			}
 			return;
 		}
 
