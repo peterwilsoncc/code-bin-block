@@ -11,7 +11,7 @@
  * Plugin Name: Code Bin Block
  * Description: Code Bin Block
  * Version: 1.0.0
- * Requires at least: 6.6
+ * Requires at least: 6.8
  * Requires PHP: 8.0
  * Author: Peter Wilson
  * Author URI: https://peterwilson.cc
