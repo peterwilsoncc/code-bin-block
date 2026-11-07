@@ -13,7 +13,38 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  build:
+    # The plugin registers its block from the build directory, which isn't
+    # committed. Build it once and share it with each PHPUnit job.
+    name: Build
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+
+    - name: Setup Node
+      uses: actions/setup-node@v4
+      with:
+        node-version: 24
+        cache: npm
+
+    - name: npm install
+      run: npm ci
+
+    - name: Build
+      run: npm run build
+
+    - name: Upload build
+      uses: actions/upload-artifact@v4
+      with:
+        name: build
+        path: build/
+        if-no-files-found: error
+        retention-days: 1
+
   phpunit:
+    needs: [ 'build' ]
     runs-on: ubuntu-latest
     env:
       DB_DATABASE: wordpress_test
@@ -29,6 +60,12 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v4
+
+    - name: Download build
+      uses: actions/download-artifact@v4
+      with:
+        name: build
+        path: build/
 
     - name: Setup PHP
       uses: shivammathur/setup-php@v2
@@ -64,7 +101,7 @@ jobs:
     # required status check will not need to be updated when matrix items change.
     name: PHPUnit Required Status Checks
     runs-on: 'ubuntu-24.04'
-    needs: [ 'phpunit' ]
+    needs: [ 'build', 'phpunit' ]
     if: ${{ always() }}
     steps:
       - name: Detect any failing status checks
