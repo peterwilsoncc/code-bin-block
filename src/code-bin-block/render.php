@@ -5,7 +5,8 @@
  * Outputs tabs containing the code as escaped text, followed by a preview
  * iframe. Every tab is shown, even when it contains no code.
  *
- * In feeds, a link to the block on the site is output instead.
+ * In feeds, the code and a link to the block on the site are output instead,
+ * see render-feed.php.
  *
  * The iframe is rendered with an empty sandbox (scripts disabled) and only the
  * HTML and CSS. The view script adds loop protection to the JavaScript and
@@ -35,16 +36,9 @@ if ( '' === trim( implode( '', $code ) ) ) {
 
 $anchor = \CodeBinBlock\get_block_anchor( $attributes );
 
-/*
- * Feed readers strip the scripts and most of the markup, so link to the block
- * on the site instead.
- */
+// Feed readers strip the scripts and most of the markup, see render-feed.php.
 if ( is_feed() ) {
-	printf(
-		'<p><a href="%s">%s</a></p>',
-		esc_url( get_permalink() . '#' . $anchor ),
-		esc_html__( 'View the code and live preview on the website.', 'code-bin-block' )
-	);
+	require __DIR__ . '/render-feed.php';
 	return;
 }
 
