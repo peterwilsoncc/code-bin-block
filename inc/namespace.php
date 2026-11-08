@@ -77,7 +77,7 @@ function register_post_type() {
 			),
 			'public'        => true,
 			'has_archive'   => true,
-			'rewrite'       => array( 'slug' => 'code' ),
+			'rewrite'       => array( 'slug' => 'code-bin' ),
 			'menu_icon'     => 'dashicons-editor-code',
 			'show_in_rest'  => true,
 			'rest_base'     => 'code-bins',
