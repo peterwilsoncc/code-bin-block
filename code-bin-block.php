@@ -10,7 +10,7 @@
  * @wordpress-plugin
  * Plugin Name: Code Bin Block
  * Description: Code Bin Block
- * Version: 1.1.0
+ * Version: 1.2.0
  * Requires at least: 6.8
  * Requires PHP: 8.0
  * Author: Peter Wilson
