@@ -104,7 +104,7 @@ function CodeInput( { language, value, onChange, label, placeholder } ) {
 
 	return (
 		<div className="code-bin__editor">
-			<pre className="code-bin__code" aria-hidden="true">
+			<pre className="code-bin__code wp-exclude-emoji" aria-hidden="true">
 				{ /* A single string child keeps a single text node, which microlighter requires.
 				The trailing new line matches the textarea's height when the code ends in a new line. */ }
 				<code ref={ codeRef } className={ `language-${ language }` }>
@@ -342,7 +342,7 @@ export default function Edit( { attributes, setAttributes, clientId, name } ) {
 					/>
 				</PanelBody>
 			</InspectorControls>
-			<div { ...useBlockProps( { className: 'code-bin' } ) }>
+			<div { ...useBlockProps( { className: 'code-bin wp-exclude-emoji' } ) }>
 				<TabPanel
 					className="code-bin__tabs"
 					activeClass="is-active"

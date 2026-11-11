@@ -66,7 +66,7 @@ foreach ( $panels as $panel => $label ) {
 $id_prefix = wp_unique_id( 'code-bin-' );
 
 $extra_attributes = array(
-	'class'                        => 'code-bin',
+	'class'                        => 'code-bin wp-exclude-emoji',
 	'data-code-bin-block-editable' => $editable ? 'true' : 'false',
 );
 if ( '' !== trim( $preview_styles ) ) {
@@ -108,7 +108,7 @@ $wrapper_attributes = get_block_wrapper_attributes( $extra_attributes );
 				/* translators: %s: Language name, eg CSS. */
 				$empty_text = sprintf( __( 'No %s', 'code-bin-block' ), $label );
 				?>
-				<pre class="code-bin__code"><code class="language-<?php echo esc_attr( $panel ); ?>" data-empty="<?php echo esc_attr( $empty_text ); ?>"><?php echo esc_html( $code[ $panel ] ); ?></code></pre>
+				<pre class="code-bin__code wp-exclude-emoji"><code class="language-<?php echo esc_attr( $panel ); ?>" data-empty="<?php echo esc_attr( $empty_text ); ?>"><?php echo esc_html( $code[ $panel ] ); ?></code></pre>
 			</div>
 		</div>
 	<?php endforeach; ?>
