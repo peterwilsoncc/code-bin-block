@@ -18,4 +18,5 @@ jobs:
       uses: wordpress/plugin-check-action@10857da14b6c2246d15402b3e69f777edcf8c12e # v1.1.9
       with:
         exclude-directories: ".github,bin,tests"
-        exclude-files: ".editorconfig,.gitattributes,.gitignore,.wordpress-version-checker.json,phpcs.xml.dist,phpunit.xml.dist,readme.md"
+        # Files not included in releases, see .gitattributes.
+        exclude-files: ".editorconfig,.gitattributes,.gitignore,.nvmrc,.wordpress-version-checker.json,phpcs.xml.dist,phpunit.xml.dist,readme.md,RELEASE.md"

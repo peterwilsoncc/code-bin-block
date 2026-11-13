@@ -21,6 +21,8 @@
 
 namespace CodeBinBlock;
 
+defined( 'ABSPATH' ) || exit;
+
 const PLUGIN_DIRECTORY = __DIR__;
 const PLUGIN_FILE      = __FILE__;
 

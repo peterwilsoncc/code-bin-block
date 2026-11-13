@@ -17,6 +17,8 @@
 
 namespace CodeBinBlock;
 
+defined( 'ABSPATH' ) || exit;
+
 if ( ! have_posts() ) {
 	get_header( 'embed' );
 	get_template_part( 'embed', '404' );

@@ -7,6 +7,8 @@
 
 namespace CodeBinBlock;
 
+defined( 'ABSPATH' ) || exit;
+
 const PLUGIN_VERSION = '1.2.0';
 
 const POST_TYPE = 'code_bin';
@@ -179,6 +181,7 @@ CSS;
 	 *
 	 * @param string $styles CSS.
 	 */
+	// phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound -- Prefixed with code_bin_block_, Plugin Check only detects the namespace as a prefix.
 	$styles = apply_filters( 'code_bin_block_preview_styles', $styles );
 
 	return is_string( $styles ) ? $styles : '';

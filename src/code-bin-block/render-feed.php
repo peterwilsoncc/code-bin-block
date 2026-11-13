@@ -17,6 +17,8 @@
  * phpcs:disable WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
  */
 
+defined( 'ABSPATH' ) || exit;
+
 foreach ( $panels as $panel => $label ) {
 	if ( '' === trim( $code[ $panel ] ) ) {
 		continue;
