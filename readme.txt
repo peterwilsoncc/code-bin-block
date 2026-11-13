@@ -1,4 +1,4 @@
-=== Code Bin Block ===
+=== Code Bin ===
 Contributors: peterwilsoncc
 Tags:
 Tested up to: 7.2
@@ -15,11 +15,11 @@ Short Description
 
 = Can I change the default styles of the preview? =
 
-Yes. The preview has a few base styles (font, colors, margins) that are not shown in the CSS panel. Use the `code_bin_block_preview_styles` filter to change them, for example to match your theme:
+Yes. The preview has a few base styles (font, colors, margins) that are not shown in the CSS panel. Use the `code_bin_preview_styles` filter to change them, for example to match your theme:
 
 `
 add_filter(
-	'code_bin_block_preview_styles',
+	'code_bin_preview_styles',
 	function ( $styles ) {
 		return $styles . ':root { font-family: Georgia, serif; color: #333; }';
 	}
@@ -32,14 +32,14 @@ The base styles are placed in a cascade layer before the code bin's CSS, so CSS 
 
 Yes. The colours of the code, the tabs, the console and the status messages are CSS custom properties that themes can set.
 
-Block themes (and classic themes with a theme.json file) can set them in theme.json under `settings.custom.codeBinBlock`, including in style variations. For example, a dark scheme:
+Block themes (and classic themes with a theme.json file) can set them in theme.json under `settings.custom.codeBin`, including in style variations. For example, a dark scheme:
 
 `
 {
 	"version": 3,
 	"settings": {
 		"custom": {
-			"codeBinBlock": {
+			"codeBin": {
 				"syntax": {
 					"background": "#282a36",
 					"foreground": "#f8f8f2",
@@ -85,8 +85,8 @@ Any theme can set the same properties in its stylesheet, on `:root`, `body` or t
 
 `
 :root {
-	--wp--custom--code-bin-block--syntax--keyword: #d73a49;
-	--wp--custom--code-bin-block--ui--font-family: "Fira Code", monospace;
+	--wp--custom--code-bin--syntax--keyword: #d73a49;
+	--wp--custom--code-bin--ui--font-family: "Fira Code", monospace;
 }
 `
 
@@ -94,11 +94,10 @@ Embeds of code bins on other sites do not load the theme's stylesheet. Colours s
 
 Values that are not set keep their defaults, based on the GitHub light theme. The available properties are:
 
-* Syntax (`--wp--custom--code-bin-block--syntax--{name}`): `background`, `foreground`, `comment`, `keyword`, `operator`, `string`, `constant`, `function`, `type`, `variable`, `property`, `tag`, `selector`, `selection`.
-* Interface (`--wp--custom--code-bin-block--ui--{name}`): `color-scheme` (`light` or `dark`), `font-family`, `border`, `divider`, `muted`, `toolbar`, `accent`, `button`, `button-hover`, `warning-background`, `warning-text`, `warning-border`, `error-background`, `error-text`, `error-border`, `error-accent`.
+* Syntax (`--wp--custom--code-bin--syntax--{name}`): `background`, `foreground`, `comment`, `keyword`, `operator`, `string`, `constant`, `function`, `type`, `variable`, `property`, `tag`, `selector`, `selection`.
+* Interface (`--wp--custom--code-bin--ui--{name}`): `color-scheme` (`light` or `dark`), `font-family`, `border`, `divider`, `muted`, `toolbar`, `accent`, `button`, `button-hover`, `warning-background`, `warning-text`, `warning-border`, `error-background`, `error-text`, `error-border`, `error-accent`.
 
 In theme.json, write multi-word names in camel case, eg `colorScheme`, `buttonHover` and `errorBackground`.
-
-The preview of the code bin's result has its own base styles, see the `code_bin_block_preview_styles` filter.
+The preview of the code bin's result has its own base styles, see the `code_bin_preview_styles` filter.
 
 == Changelog ==

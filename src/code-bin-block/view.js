@@ -170,7 +170,7 @@ function initBlock( block ) {
 	const status = block.querySelector( '.code-bin__status' );
 	const toolbar = block.querySelector( '.code-bin__toolbar' );
 	const panels = [ ...block.querySelectorAll( '.code-bin__panel' ) ];
-	const editable = block.dataset.codeBinBlockEditable === 'true';
+	const editable = block.dataset.codeBinEditable === 'true';
 	const readers = new Map();
 	const resetters = [];
 
@@ -190,7 +190,7 @@ function initBlock( block ) {
 		},
 		onConsole: consoleView.add,
 		onClear: consoleView.clear,
-		baseStyles: block.dataset.codeBinBlockPreviewStyles || '',
+		baseStyles: block.dataset.codeBinPreviewStyles || '',
 	} );
 
 	const onChange = () => preview.update( readCode( readers ) );
@@ -209,13 +209,13 @@ function initBlock( block ) {
 
 	if ( toolbar ) {
 		toolbar.append(
-			createButton( __( 'Run', 'code-bin-block' ), () =>
+			createButton( __( 'Run', 'code-bin' ), () =>
 				preview.run( readCode( readers ) )
 			)
 		);
 		if ( editable ) {
 			toolbar.append(
-				createButton( __( 'Reset', 'code-bin-block' ), () => {
+				createButton( __( 'Reset', 'code-bin' ), () => {
 					resetters.forEach( ( reset ) => reset() );
 					preview.run( readCode( readers ) );
 				} )

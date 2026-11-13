@@ -1,11 +1,11 @@
 <?php
 /**
- * Code Bin Block
+ * Code Bin
  *
- * @package           CodeBinBlock
+ * @package           CodeBin
  */
 
-namespace CodeBinBlock;
+namespace CodeBin;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -50,32 +50,32 @@ function register_post_type() {
 		POST_TYPE,
 		array(
 			'labels'        => array(
-				'name'                     => _x( 'Code Bins', 'post type general name', 'code-bin-block' ),
-				'singular_name'            => _x( 'Code Bin', 'post type singular name', 'code-bin-block' ),
-				'add_new'                  => _x( 'Add New', 'code bin', 'code-bin-block' ),
-				'add_new_item'             => __( 'Add New Code Bin', 'code-bin-block' ),
-				'edit_item'                => __( 'Edit Code Bin', 'code-bin-block' ),
-				'new_item'                 => __( 'New Code Bin', 'code-bin-block' ),
-				'view_item'                => __( 'View Code Bin', 'code-bin-block' ),
-				'view_items'               => __( 'View Code Bins', 'code-bin-block' ),
-				'search_items'             => __( 'Search Code Bins', 'code-bin-block' ),
-				'not_found'                => __( 'No code bins found.', 'code-bin-block' ),
-				'not_found_in_trash'       => __( 'No code bins found in Trash.', 'code-bin-block' ),
-				'all_items'                => __( 'All Code Bins', 'code-bin-block' ),
-				'archives'                 => __( 'Code Bin Archives', 'code-bin-block' ),
-				'attributes'               => __( 'Code Bin Attributes', 'code-bin-block' ),
-				'insert_into_item'         => __( 'Insert into code bin', 'code-bin-block' ),
-				'uploaded_to_this_item'    => __( 'Uploaded to this code bin', 'code-bin-block' ),
-				'filter_items_list'        => __( 'Filter code bins list', 'code-bin-block' ),
-				'items_list_navigation'    => __( 'Code bins list navigation', 'code-bin-block' ),
-				'items_list'               => __( 'Code bins list', 'code-bin-block' ),
-				'item_published'           => __( 'Code bin published.', 'code-bin-block' ),
-				'item_published_privately' => __( 'Code bin published privately.', 'code-bin-block' ),
-				'item_reverted_to_draft'   => __( 'Code bin reverted to draft.', 'code-bin-block' ),
-				'item_scheduled'           => __( 'Code bin scheduled.', 'code-bin-block' ),
-				'item_updated'             => __( 'Code bin updated.', 'code-bin-block' ),
-				'item_link'                => _x( 'Code Bin Link', 'navigation link block title', 'code-bin-block' ),
-				'item_link_description'    => _x( 'A link to a code bin.', 'navigation link block description', 'code-bin-block' ),
+				'name'                     => _x( 'Code Bins', 'post type general name', 'code-bin' ),
+				'singular_name'            => _x( 'Code Bin', 'post type singular name', 'code-bin' ),
+				'add_new'                  => _x( 'Add New', 'code bin', 'code-bin' ),
+				'add_new_item'             => __( 'Add New Code Bin', 'code-bin' ),
+				'edit_item'                => __( 'Edit Code Bin', 'code-bin' ),
+				'new_item'                 => __( 'New Code Bin', 'code-bin' ),
+				'view_item'                => __( 'View Code Bin', 'code-bin' ),
+				'view_items'               => __( 'View Code Bins', 'code-bin' ),
+				'search_items'             => __( 'Search Code Bins', 'code-bin' ),
+				'not_found'                => __( 'No code bins found.', 'code-bin' ),
+				'not_found_in_trash'       => __( 'No code bins found in Trash.', 'code-bin' ),
+				'all_items'                => __( 'All Code Bins', 'code-bin' ),
+				'archives'                 => __( 'Code Bin Archives', 'code-bin' ),
+				'attributes'               => __( 'Code Bin Attributes', 'code-bin' ),
+				'insert_into_item'         => __( 'Insert into code bin', 'code-bin' ),
+				'uploaded_to_this_item'    => __( 'Uploaded to this code bin', 'code-bin' ),
+				'filter_items_list'        => __( 'Filter code bins list', 'code-bin' ),
+				'items_list_navigation'    => __( 'Code bins list navigation', 'code-bin' ),
+				'items_list'               => __( 'Code bins list', 'code-bin' ),
+				'item_published'           => __( 'Code bin published.', 'code-bin' ),
+				'item_published_privately' => __( 'Code bin published privately.', 'code-bin' ),
+				'item_reverted_to_draft'   => __( 'Code bin reverted to draft.', 'code-bin' ),
+				'item_scheduled'           => __( 'Code bin scheduled.', 'code-bin' ),
+				'item_updated'             => __( 'Code bin updated.', 'code-bin' ),
+				'item_link'                => _x( 'Code Bin Link', 'navigation link block title', 'code-bin' ),
+				'item_link_description'    => _x( 'A link to a code bin.', 'navigation link block description', 'code-bin' ),
 			),
 			'public'        => true,
 			'has_archive'   => true,
@@ -181,8 +181,8 @@ CSS;
 	 *
 	 * @param string $styles CSS.
 	 */
-	// phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound -- Prefixed with code_bin_block_, Plugin Check only detects the namespace as a prefix.
-	$styles = apply_filters( 'code_bin_block_preview_styles', $styles );
+	// phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound -- Prefixed with code_bin_, Plugin Check only detects the namespace as a prefix.
+	$styles = apply_filters( 'code_bin_preview_styles', $styles );
 
 	return is_string( $styles ) ? $styles : '';
 }
@@ -212,7 +212,7 @@ function get_preview_styles_element( $styles ) {
 function add_editor_preview_styles() {
 	wp_add_inline_script(
 		generate_block_asset_handle( BLOCK_NAME, 'editorScript' ),
-		'window.codeBinBlock = Object.assign( window.codeBinBlock || {}, ' . wp_json_encode( array( 'previewStyles' => get_preview_styles() ) ) . ' );',
+		'window.codeBin = Object.assign( window.codeBin || {}, ' . wp_json_encode( array( 'previewStyles' => get_preview_styles() ) ) . ' );',
 		'before'
 	);
 }

@@ -10,12 +10,12 @@
  *
  * Themes can override this with an `embed-code_bin.php` template.
  *
- * @package CodeBinBlock
+ * @package CodeBin
  *
  * phpcs:disable WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound -- Templates are included within a function.
  */
 
-namespace CodeBinBlock;
+namespace CodeBin;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -62,9 +62,9 @@ add_action(
 			return;
 		}
 
-		wp_register_style( 'code-bin-block-embed-variables', false, array(), PLUGIN_VERSION );
-		wp_add_inline_style( 'code-bin-block-embed-variables', $variables );
-		wp_enqueue_style( 'code-bin-block-embed-variables' );
+		wp_register_style( 'code-bin-embed-variables', false, array(), PLUGIN_VERSION );
+		wp_add_inline_style( 'code-bin-embed-variables', $variables );
+		wp_enqueue_style( 'code-bin-embed-variables' );
 	}
 );
 

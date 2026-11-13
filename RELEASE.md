@@ -1,4 +1,4 @@
-# Releasing Code Bin Block
+# Releasing Code Bin
 
 Built assets (`build/`) are never committed to `main`. Instead, each release is built by GitHub Actions and committed to its own `release-X.Y.Z` branch, which is tagged `X.Y.Z`. That tag is what Composer (via Packagist) installs and what is deployed to WordPress.org.
 
@@ -14,7 +14,7 @@ On `main`:
    ```
 
    The script sets the version in `package.json` and `package-lock.json` with `npm version`, then copies it to:
-   - the `Version:` header in `code-bin-block.php`
+   - the `Version:` header in `code-bin.php`
    - the `PLUGIN_VERSION` constant in `inc/namespace.php`
    - the `Stable tag:` header in `readme.txt`
    - the block's `version` in `src/code-bin-block/block.json`, which WordPress uses to cache bust the block's assets

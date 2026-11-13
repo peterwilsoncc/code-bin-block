@@ -27,9 +27,9 @@
 		<properties>
 			<!-- Function, class, variable and hook prefixes, and the namespace. -->
 			<property name="prefixes" type="array">
-				<element value="code_bin_block_"/>
-				<element value="_code_bin_block_"/>
-				<element value="CodeBinBlock"/>
+				<element value="code_bin_"/>
+				<element value="_code_bin_"/>
+				<element value="CodeBin"/>
 			</property>
 		</properties>
 	</rule>
@@ -37,7 +37,7 @@
 		<properties>
 			<!-- Value: replace the text domain used. -->
 			<property name="text_domain" type="array">
-				<element value="code-bin-block"/>
+				<element value="code-bin"/>
 			</property>
 		</properties>
 	</rule>

@@ -31,19 +31,19 @@ const PANELS = [
 		name: 'html',
 		title: 'HTML',
 		language: 'html',
-		placeholder: __( 'Write HTML…', 'code-bin-block' ),
+		placeholder: __( 'Write HTML…', 'code-bin' ),
 	},
 	{
 		name: 'css',
 		title: 'CSS',
 		language: 'css',
-		placeholder: __( 'Write CSS…', 'code-bin-block' ),
+		placeholder: __( 'Write CSS…', 'code-bin' ),
 	},
 	{
 		name: 'javascript',
 		title: 'JavaScript',
 		language: 'javascript',
-		placeholder: __( 'Write JavaScript…', 'code-bin-block' ),
+		placeholder: __( 'Write JavaScript…', 'code-bin' ),
 	},
 ];
 
@@ -75,7 +75,7 @@ function PanelTabTitle( { title, hasCode } ) {
 			{ /* A span: buttons may only contain phrasing content. */ }
 			<VisuallyHidden as="span">
 				{ ' ' }
-				{ __( '(contains code)', 'code-bin-block' ) }
+				{ __( '(contains code)', 'code-bin' ) }
 			</VisuallyHidden>
 		</>
 	);
@@ -127,8 +127,8 @@ function CodeInput( { language, value, onChange, label, placeholder } ) {
 }
 
 const OUTPUT_TABS = [
-	{ name: 'result', title: __( 'Result', 'code-bin-block' ) },
-	{ name: 'console', title: __( 'Console', 'code-bin-block' ) },
+	{ name: 'result', title: __( 'Result', 'code-bin' ) },
+	{ name: 'console', title: __( 'Console', 'code-bin' ) },
 ];
 
 /**
@@ -163,7 +163,7 @@ function Preview( { code, height } ) {
 				),
 			onClear: () => setEntries( [] ),
 			// Filterable on the server, see get_preview_styles().
-			baseStyles: window.codeBinBlock?.previewStyles || '',
+			baseStyles: window.codeBin?.previewStyles || '',
 		} );
 		previewRef.current = preview;
 		preview.run( codeRef.current );
@@ -200,7 +200,7 @@ function Preview( { code, height } ) {
 				<div
 					className="code-bin__tablist"
 					role="tablist"
-					aria-label={ __( 'Output', 'code-bin-block' ) }
+					aria-label={ __( 'Output', 'code-bin' ) }
 				>
 					{ OUTPUT_TABS.map( ( tab, index ) => (
 						<button
@@ -238,7 +238,7 @@ function Preview( { code, height } ) {
 					size="small"
 					onClick={ () => previewRef.current?.run( codeRef.current ) }
 				>
-					{ __( 'Run', 'code-bin-block' ) }
+					{ __( 'Run', 'code-bin' ) }
 				</Button>
 			</div>
 			<div
@@ -258,7 +258,7 @@ function Preview( { code, height } ) {
 				<iframe
 					ref={ iframeRef }
 					className="code-bin__preview"
-					title={ __( 'Code preview', 'code-bin-block' ) }
+					title={ __( 'Code preview', 'code-bin' ) }
 					sandbox="allow-scripts"
 					style={ { height } }
 				/>
@@ -276,7 +276,7 @@ function Preview( { code, height } ) {
 					style={ { height } }
 					data-empty={ __(
 						'Console messages from the JavaScript will appear here.',
-						'code-bin-block'
+						'code-bin'
 					) }
 				>
 					{ entries.map( ( entry, index ) => (
@@ -312,16 +312,16 @@ export default function Edit( { attributes, setAttributes, clientId, name } ) {
 	return (
 		<>
 			<InspectorControls>
-				<PanelBody title={ __( 'Settings', 'code-bin-block' ) }>
+				<PanelBody title={ __( 'Settings', 'code-bin' ) }>
 					<ToggleControl
 						__nextHasNoMarginBottom
 						label={ __(
 							'Allow visitors to edit the code',
-							'code-bin-block'
+							'code-bin'
 						) }
 						help={ __(
 							'Visitors can experiment with the code on the front end. Their changes are not saved.',
-							'code-bin-block'
+							'code-bin'
 						) }
 						checked={ editable }
 						onChange={ ( value ) =>
@@ -331,7 +331,7 @@ export default function Edit( { attributes, setAttributes, clientId, name } ) {
 					<RangeControl
 						__next40pxDefaultSize
 						__nextHasNoMarginBottom
-						label={ __( 'Preview height', 'code-bin-block' ) }
+						label={ __( 'Preview height', 'code-bin' ) }
 						value={ previewHeight }
 						onChange={ ( value ) =>
 							setAttributes( { previewHeight: value ?? 300 } )

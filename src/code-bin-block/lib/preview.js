@@ -25,7 +25,7 @@ import { MAX_CONSOLE_ENTRIES } from './console';
 import { GUARD_NAME, protectLoops } from './loop-protect';
 
 const LOOP_TIMEOUT = 1000;
-const MESSAGE_KEY = 'codeBinBlockPreview';
+const MESSAGE_KEY = 'codeBinPreview';
 const PANEL_LABELS = {
 	html: 'HTML',
 	css: 'CSS',
@@ -374,7 +374,7 @@ function describeLocation( status ) {
 	if ( panel && status.line ) {
 		return sprintf(
 			/* translators: 1: Panel name, eg JavaScript. 2: Line number. */
-			__( '%1$s line %2$d', 'code-bin-block' ),
+			__( '%1$s line %2$d', 'code-bin' ),
 			panel,
 			status.line
 		);
@@ -393,10 +393,7 @@ function consoleEntryForStatus( status ) {
 	const where = describeLocation( status );
 	const text =
 		status.state === 'loop'
-			? __(
-					'Possible infinite loop, the loop was stopped.',
-					'code-bin-block'
-				)
+			? __( 'Possible infinite loop, the loop was stopped.', 'code-bin' )
 			: status.message;
 
 	return {
@@ -421,7 +418,7 @@ export function describeStatus( status ) {
 						/* translators: 1: Location, eg JavaScript line 3. 2: Error message. */
 						__(
 							'Syntax error (%1$s): %2$s. The preview has not been updated.',
-							'code-bin-block'
+							'code-bin'
 						),
 						where,
 						status.message
@@ -430,7 +427,7 @@ export function describeStatus( status ) {
 						/* translators: %s: Error message. */
 						__(
 							'Syntax error: %s. The preview has not been updated.',
-							'code-bin-block'
+							'code-bin'
 						),
 						status.message
 					);
@@ -440,13 +437,13 @@ export function describeStatus( status ) {
 						/* translators: %s: Location, eg JavaScript line 3. */
 						__(
 							'Possible infinite loop (%s). The loop was stopped and live preview is paused.',
-							'code-bin-block'
+							'code-bin'
 						),
 						where
 					)
 				: __(
 						'Possible infinite loop. The loop was stopped and live preview is paused.',
-						'code-bin-block'
+						'code-bin'
 					);
 		case 'error':
 			return where
@@ -454,17 +451,14 @@ export function describeStatus( status ) {
 						/* translators: 1: Location, eg JavaScript line 3. 2: Error message. */
 						__(
 							'Error (%1$s): %2$s. Live preview is paused.',
-							'code-bin-block'
+							'code-bin'
 						),
 						where,
 						status.message
 					)
 				: sprintf(
 						/* translators: %s: Error message. */
-						__(
-							'Error: %s. Live preview is paused.',
-							'code-bin-block'
-						),
+						__( 'Error: %s. Live preview is paused.', 'code-bin' ),
 						status.message
 					);
 		default:
@@ -534,7 +528,7 @@ export function createPreview(
 							'%d earlier message was not shown.',
 							'%d earlier messages were not shown.',
 							hidden,
-							'code-bin-block'
+							'code-bin'
 						),
 						hidden
 					),

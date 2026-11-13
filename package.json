@@ -1,5 +1,5 @@
 {
-	"name": "code-bin-block",
+	"name": "code-bin",
 	"version": "1.2.0",
 	"description": "Example block scaffolded with Create Block tool.",
 	"author": "The WordPress Contributors",
@@ -9,7 +9,7 @@
 		"build",
 		"inc",
 		"templates",
-		"code-bin-block.php",
+		"code-bin.php",
 		"readme.txt",
 		"LICENSE"
 	],

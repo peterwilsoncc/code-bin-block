@@ -1,6 +1,6 @@
 {
     "name": "peterwilsoncc/code-bin-block",
-    "description": "Code Bin Block.",
+    "description": "Code Bin.",
     "type": "wordpress-plugin",
     "require-dev": {
         "dealerdirect/phpcodesniffer-composer-installer": "^1.0",

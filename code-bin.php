@@ -1,25 +1,25 @@
 <?php
 /**
- * Code Bin Block
+ * Code Bin
  *
- * @package           CodeBinBlock
+ * @package           CodeBin
  * @author            Peter Wilson
  * @copyright         YYYY Peter Wilson
  * @license           MIT
  *
  * @wordpress-plugin
- * Plugin Name: Code Bin Block
- * Description: Code Bin Block
+ * Plugin Name: Code Bin
+ * Description: Write HTML, CSS and JavaScript and show it with a live preview.
  * Version: 1.2.0
  * Requires at least: 6.8
  * Requires PHP: 8.0
  * Author: Peter Wilson
  * Author URI: https://peterwilson.cc
  * License: MIT
- * Text Domain: code-bin-block
+ * Text Domain: code-bin
  */
 
-namespace CodeBinBlock;
+namespace CodeBin;
 
 defined( 'ABSPATH' ) || exit;
 

@@ -2,14 +2,14 @@
 /**
  * Test Plugin Versions match.
  *
- * @package CodeBinBlock
+ * @package CodeBin
  */
 
-namespace CodeBinBlock\Tests;
+namespace CodeBin\Tests;
 
 use WP_UnitTestCase;
 
-use const CodeBinBlock\PLUGIN_VERSION;
+use const CodeBin\PLUGIN_VERSION;
 
 /**
  * Test Plugin Readme and PHP Headers

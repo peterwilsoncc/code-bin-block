@@ -9,9 +9,9 @@
  * Colour scheme.
  *
  * Every value can be changed by themes through custom properties named
- * `--wp--custom--code-bin-block--{group}--{name}`, eg
- * `--wp--custom--code-bin-block--syntax--keyword`. Block themes can set them
- * in theme.json under `settings.custom.codeBinBlock`, any theme can set them
+ * `--wp--custom--code-bin--{group}--{name}`, eg
+ * `--wp--custom--code-bin--syntax--keyword`. Block themes can set them
+ * in theme.json under `settings.custom.codeBin`, any theme can set them
  * in CSS on `:root`, `body` or the block.
  *
  * The defaults are based on microlighter's GitHub light theme.
@@ -55,11 +55,11 @@ $code-bin-ui: (
 .wp-block-code-bin-block-code-bin-block {
 
 	@each $name, $value in $code-bin-syntax {
-		--code-bin-syntax-#{$name}: var(--wp--custom--code-bin-block--syntax--#{$name}, #{$value});
+		--code-bin-syntax-#{$name}: var(--wp--custom--code-bin--syntax--#{$name}, #{$value});
 	}
 
 	@each $name, $value in $code-bin-ui {
-		--code-bin-#{$name}: var(--wp--custom--code-bin-block--ui--#{$name}, #{$value});
+		--code-bin-#{$name}: var(--wp--custom--code-bin--ui--#{$name}, #{$value});
 	}
 
 	color-scheme: var(--code-bin-color-scheme);

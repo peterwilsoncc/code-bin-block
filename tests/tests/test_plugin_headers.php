@@ -2,10 +2,10 @@
 /**
  * Test Plugin Readme and PHP Headers
  *
- * @package CodeBinBlock
+ * @package CodeBin
  */
 
-namespace CodeBinBlock\Tests;
+namespace CodeBin\Tests;
 
 use WP_UnitTestCase;
 

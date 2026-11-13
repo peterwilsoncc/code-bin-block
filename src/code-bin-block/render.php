@@ -14,7 +14,7 @@
  * loop locking up the page before the protection is in place, and gives
  * visitors without JavaScript a static preview.
  *
- * @package CodeBinBlock
+ * @package CodeBin
  *
  * phpcs:disable WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
  */
@@ -36,7 +36,7 @@ if ( '' === trim( implode( '', $code ) ) ) {
 	return;
 }
 
-$anchor = \CodeBinBlock\get_block_anchor( $attributes );
+$anchor = \CodeBin\get_block_anchor( $attributes );
 
 // Feed readers strip the scripts and most of the markup, see render-feed.php.
 if ( is_feed() ) {
@@ -47,10 +47,10 @@ if ( is_feed() ) {
 $preview_height = isset( $attributes['previewHeight'] ) ? absint( $attributes['previewHeight'] ) : 300;
 $editable       = ! empty( $attributes['editable'] );
 
-$preview_styles = \CodeBinBlock\get_preview_styles();
+$preview_styles = \CodeBin\get_preview_styles();
 
 $srcdoc  = '<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">';
-$srcdoc .= '<meta name="color-scheme" content="light">' . \CodeBinBlock\get_preview_styles_element( $preview_styles );
+$srcdoc .= '<meta name="color-scheme" content="light">' . \CodeBin\get_preview_styles_element( $preview_styles );
 if ( '' !== trim( $code['css'] ) ) {
 	$srcdoc .= '<style>' . $code['css'] . '</style>';
 }
@@ -68,21 +68,21 @@ foreach ( $panels as $panel => $label ) {
 $id_prefix = wp_unique_id( 'code-bin-' );
 
 $extra_attributes = array(
-	'class'                        => 'code-bin wp-exclude-emoji',
-	'data-code-bin-block-editable' => $editable ? 'true' : 'false',
+	'class'                  => 'code-bin wp-exclude-emoji',
+	'data-code-bin-editable' => $editable ? 'true' : 'false',
 );
 if ( '' !== trim( $preview_styles ) ) {
-	$extra_attributes['data-code-bin-block-preview-styles'] = $preview_styles;
+	$extra_attributes['data-code-bin-preview-styles'] = $preview_styles;
 }
 // Saved anchors are output by the anchor block support.
-if ( ! \CodeBinBlock\has_saved_anchor( $attributes ) && \CodeBinBlock\reserve_block_anchor( $anchor ) ) {
+if ( ! \CodeBin\has_saved_anchor( $attributes ) && \CodeBin\reserve_block_anchor( $anchor ) ) {
 	$extra_attributes['id'] = $anchor;
 }
 
 $wrapper_attributes = get_block_wrapper_attributes( $extra_attributes );
 ?>
 <div <?php echo $wrapper_attributes; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped by core. ?>>
-	<div class="code-bin__tablist" role="tablist" aria-label="<?php esc_attr_e( 'Code', 'code-bin-block' ); ?>">
+	<div class="code-bin__tablist" role="tablist" aria-label="<?php esc_attr_e( 'Code', 'code-bin' ); ?>">
 		<?php foreach ( $panels as $panel => $label ) : ?>
 			<button
 				type="button"
@@ -108,7 +108,7 @@ $wrapper_attributes = get_block_wrapper_attributes( $extra_attributes );
 			<div class="code-bin__editor">
 				<?php
 				/* translators: %s: Language name, eg CSS. */
-				$empty_text = sprintf( __( 'No %s', 'code-bin-block' ), $label );
+				$empty_text = sprintf( __( 'No %s', 'code-bin' ), $label );
 				?>
 				<pre class="code-bin__code wp-exclude-emoji"><code class="language-<?php echo esc_attr( $panel ); ?>" data-empty="<?php echo esc_attr( $empty_text ); ?>"><?php echo esc_html( $code[ $panel ] ); ?></code></pre>
 			</div>
@@ -116,7 +116,7 @@ $wrapper_attributes = get_block_wrapper_attributes( $extra_attributes );
 	<?php endforeach; ?>
 	<div class="code-bin__result">
 		<div class="code-bin__toolbar">
-			<div class="code-bin__tablist" role="tablist" aria-label="<?php esc_attr_e( 'Output', 'code-bin-block' ); ?>">
+			<div class="code-bin__tablist" role="tablist" aria-label="<?php esc_attr_e( 'Output', 'code-bin' ); ?>">
 				<button
 					type="button"
 					role="tab"
@@ -125,7 +125,7 @@ $wrapper_attributes = get_block_wrapper_attributes( $extra_attributes );
 					aria-controls="<?php echo esc_attr( "{$id_prefix}-panel-result" ); ?>"
 					aria-selected="true"
 					tabindex="0"
-				><?php esc_html_e( 'Result', 'code-bin-block' ); ?></button>
+				><?php esc_html_e( 'Result', 'code-bin' ); ?></button>
 				<button
 					type="button"
 					role="tab"
@@ -134,7 +134,7 @@ $wrapper_attributes = get_block_wrapper_attributes( $extra_attributes );
 					aria-controls="<?php echo esc_attr( "{$id_prefix}-panel-console" ); ?>"
 					aria-selected="false"
 					tabindex="-1"
-				><?php esc_html_e( 'Console', 'code-bin-block' ); ?> <span class="code-bin__count" hidden></span></button>
+				><?php esc_html_e( 'Console', 'code-bin' ); ?> <span class="code-bin__count" hidden></span></button>
 			</div>
 		</div>
 		<div class="code-bin__status" role="status" hidden></div>
@@ -146,7 +146,7 @@ $wrapper_attributes = get_block_wrapper_attributes( $extra_attributes );
 		>
 			<iframe
 				class="code-bin__preview"
-				title="<?php esc_attr_e( 'Code preview', 'code-bin-block' ); ?>"
+				title="<?php esc_attr_e( 'Code preview', 'code-bin' ); ?>"
 				sandbox=""
 				style="height: <?php echo esc_attr( $preview_height ); ?>px"
 				srcdoc="<?php echo esc_attr( $srcdoc ); ?>"
@@ -163,7 +163,7 @@ $wrapper_attributes = get_block_wrapper_attributes( $extra_attributes );
 				class="code-bin__console"
 				role="log"
 				style="height: <?php echo esc_attr( $preview_height ); ?>px"
-				data-empty="<?php esc_attr_e( 'Console messages from the JavaScript will appear here.', 'code-bin-block' ); ?>"
+				data-empty="<?php esc_attr_e( 'Console messages from the JavaScript will appear here.', 'code-bin' ); ?>"
 			></div>
 		</div>
 	</div>

@@ -55,10 +55,12 @@ jobs:
       env:
         SVN_USERNAME: ${{ secrets.SVN_USERNAME }}
         SVN_PASSWORD: ${{ secrets.SVN_PASSWORD }}
+        # The WordPress.org slug, it differs from the repository name.
+        SLUG: code-bin
 
     - name: Upload release asset
       uses: softprops/action-gh-release@8a0cd651e5b2365bd640854a3fa5dfc70e4875f3 # v3.0.4
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        files: ${{ github.workspace }}/${{ github.event.repository.name }}.zip
+        files: ${{ steps.deploy.outputs.zip-path }}

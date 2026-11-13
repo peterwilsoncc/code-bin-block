@@ -28,7 +28,7 @@ cd "$(dirname "$0")/.."
 # must be valid in both grep -E and Perl. The first capture group is kept and
 # the rest of the match is replaced with the new version.
 FILES=(
-	code-bin-block.php
+	code-bin.php
 	inc/namespace.php
 	readme.txt
 	src/code-bin-block/block.json

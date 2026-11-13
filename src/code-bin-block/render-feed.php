@@ -12,7 +12,7 @@
  * @var array  $code   Panel name => code.
  * @var string $anchor HTML ID of the block on the site.
  *
- * @package CodeBinBlock
+ * @package CodeBin
  *
  * phpcs:disable WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
  */
@@ -35,5 +35,5 @@ foreach ( $panels as $panel => $label ) {
 printf(
 	'<p><a href="%s">%s</a></p>',
 	esc_url( get_permalink() . '#' . $anchor ),
-	esc_html__( 'View the live preview on the website.', 'code-bin-block' )
+	esc_html__( 'View the live preview on the website.', 'code-bin' )
 );
