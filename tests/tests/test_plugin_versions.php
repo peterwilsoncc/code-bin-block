@@ -37,16 +37,8 @@ class Test_Plugin_Versions extends WP_UnitTestCase {
 	 * Test version header in the plugin file matches plugin version constant.
 	 */
 	public function test_plugin_version_header() {
-		// Get the plugin headers.
-		// Plugin name.
-		$plugin_file_name = basename( realpath( self::PLUGIN_ROOT_DIR ) ) . '.php';
-		if ( ! file_exists( self::PLUGIN_ROOT_DIR . "/{$plugin_file_name}" ) ) {
-			// Fallback to the generic plugin file name.
-			$plugin_file_name = 'plugin.php';
-		}
-
 		$plugin_file_data = get_file_data(
-			self::PLUGIN_ROOT_DIR . "/{$plugin_file_name}",
+			self::PLUGIN_ROOT_DIR . '/code-bin.php',
 			array(
 				'Version' => 'Version',
 			)
