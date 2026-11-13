@@ -136,37 +136,58 @@ $code-bin-ui: (
 		background: var(--code-bin-syntax-background);
 	}
 
+	/*
+	 * The textarea's text is transparent, visitors see the highlighted code
+	 * underneath it. The two must lay out their text identically, otherwise
+	 * the caret and selection are drawn over different characters to the ones
+	 * they apply to.
+	 *
+	 * Themes often style <pre>, <code> and <textarea> differently, and form
+	 * controls do not inherit text styles the way other elements do. Every
+	 * property affecting the size or position of the text is set here so the
+	 * two elements always match.
+	 */
 	.code-bin__code,
 	.code-bin__input {
 		grid-area: 1 / 1;
 		box-sizing: border-box;
 		width: 100%;
+		max-width: none;
+		height: auto;
 		min-height: 6rem;
 		margin: 0;
 		padding: 0.75rem;
 		border: 0;
 		border-radius: 0;
-		font-family: var(--code-bin-font-family);
-		font-size: 0.8125rem;
-		font-weight: 400;
-		line-height: 1.5;
+		// The shorthand also resets the font properties it does not set, such
+		// as font-variant and font-feature-settings.
+		font: 400 0.8125rem/1.5 var(--code-bin-font-family);
 		letter-spacing: normal;
-		tab-size: 4;
+		word-spacing: normal;
+		text-indent: 0;
+		text-transform: none;
+		text-rendering: auto;
+		text-size-adjust: 100%;
+		tab-size: 2;
 		white-space: pre-wrap;
 		overflow-wrap: anywhere;
 		word-break: normal;
+		hyphens: none;
 		text-align: start;
 		background: transparent;
 		color: var(--code-bin-syntax-foreground);
 	}
 
+	.code-bin__code {
+		overflow: visible;
+	}
+
+	// Remove any theme styles so the text is laid out by the <pre>'s styles
+	// above, eg a theme's `code { tab-size: 8; }` would otherwise misalign
+	// indented code with the textarea.
 	.code-bin__code > code {
+		all: unset;
 		display: block;
-		padding: 0;
-		font: inherit;
-		background: none;
-		color: inherit;
-		white-space: inherit;
 	}
 
 	.code-bin__input {

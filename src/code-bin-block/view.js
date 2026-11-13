@@ -57,9 +57,24 @@ function makeEditable( panel, onChange ) {
 	pre.setAttribute( 'aria-hidden', 'true' );
 	editor.append( textarea );
 
+	/*
+	 * Microlighter requires the code to be a single text node.
+	 *
+	 * The text node is created once and its contents are updated in place.
+	 * Replacing the node on each edit, eg by setting `code.textContent`, is
+	 * seen by the WordPress emoji script as new content: it replaces any emoji
+	 * in the code with images, which prevents highlighting and misaligns the
+	 * code and the textarea. The script ignores changes to existing text.
+	 */
+	let text = code.firstChild;
+	if ( ! text || text.nodeType !== text.TEXT_NODE || text.nextSibling ) {
+		text = document.createTextNode( '' );
+		code.replaceChildren( text );
+	}
+
 	const sync = () => {
-		// A single text node is required by microlighter, the new line matches the textarea height.
-		code.textContent = textarea.value + '\n';
+		// The new line matches the textarea's height when the code ends in a new line.
+		text.data = textarea.value + '\n';
 		scheduleHighlight( document );
 	};
 	sync();
