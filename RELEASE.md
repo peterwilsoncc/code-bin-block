@@ -17,6 +17,7 @@ On `main`:
    - the `Version:` header in `code-bin-block.php`
    - the `PLUGIN_VERSION` constant in `inc/namespace.php`
    - the `Stable tag:` header in `readme.txt`
+   - the block's `version` in `src/code-bin-block/block.json`, which WordPress uses to cache bust the block's assets
 
    It doesn't commit or tag anything.
 3. Add the release's entry to the `== Changelog ==` section of `readme.txt`.

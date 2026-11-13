@@ -8,8 +8,12 @@
 # 1.2.0, or major, minor, patch, premajor, preminor, prepatch or prerelease.
 #
 # Sets the version in package.json and package-lock.json with `npm version`,
-# then copies it to the plugin header, the PLUGIN_VERSION constant and the
-# readme's stable tag. Nothing is committed or tagged.
+# then copies it to the plugin header, the PLUGIN_VERSION constant, the
+# readme's stable tag and the block's version in block.json. Nothing is
+# committed or tagged.
+#
+# WordPress uses the block's version to cache bust its assets, so it must
+# change with each release.
 
 set -euo pipefail
 
@@ -27,11 +31,13 @@ FILES=(
 	code-bin-block.php
 	inc/namespace.php
 	readme.txt
+	src/code-bin-block/block.json
 )
 PATTERNS=(
 	'^( \* Version: +)[^[:space:]]+$'
 	"^(const PLUGIN_VERSION = ')[^']+"
 	'^(Stable tag: +)[^[:space:]]+$'
+	'^([[:space:]]*"version": ")[^"]+'
 )
 
 # Check every file before changing anything.

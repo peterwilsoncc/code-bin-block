@@ -72,6 +72,19 @@ class Test_Plugin_Versions extends WP_UnitTestCase {
 	}
 
 	/**
+	 * Test the block version in block.json matches the plugin version constant.
+	 *
+	 * WordPress uses the block's version to cache bust its assets.
+	 */
+	public function test_block_json_version() {
+		$block_file = self::PLUGIN_ROOT_DIR . '/src/code-bin-block/block.json';
+
+		// phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents -- fine for the tests.
+		$block_data = json_decode( file_get_contents( $block_file ), true );
+		$this->assertSame( PLUGIN_VERSION, $block_data['version'], 'The version in block.json does not match the plugin version constant.' );
+	}
+
+	/**
 	 * Test the plugin version in package-lock.json matches the plugin version constant.
 	 */
 	public function test_package_lock_json_version() {
