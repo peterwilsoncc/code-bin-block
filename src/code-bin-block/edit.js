@@ -342,7 +342,11 @@ export default function Edit( { attributes, setAttributes, clientId, name } ) {
 					/>
 				</PanelBody>
 			</InspectorControls>
-			<div { ...useBlockProps( { className: 'code-bin wp-exclude-emoji' } ) }>
+			<div
+				{ ...useBlockProps( {
+					className: 'code-bin wp-exclude-emoji',
+				} ) }
+			>
 				<TabPanel
 					className="code-bin__tabs"
 					activeClass="is-active"
