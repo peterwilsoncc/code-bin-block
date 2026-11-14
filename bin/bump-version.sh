@@ -30,7 +30,7 @@ cd "$(dirname "$0")/.."
 FILES=(
 	code-bin.php
 	inc/namespace.php
-	readme.txt
+	README.md
 	src/code-bin-block/block.json
 )
 PATTERNS=(
@@ -58,4 +58,4 @@ for i in "${!FILES[@]}"; do
 done
 
 echo "Version bumped to $VERSION."
-echo "Remember to add a changelog entry to readme.txt."
+echo "Remember to add a changelog entry to README.md."

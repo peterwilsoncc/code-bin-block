@@ -16,11 +16,11 @@ On `main`:
    The script sets the version in `package.json` and `package-lock.json` with `npm version`, then copies it to:
    - the `Version:` header in `code-bin.php`
    - the `PLUGIN_VERSION` constant in `inc/namespace.php`
-   - the `Stable tag:` header in `readme.txt`
+   - the `Stable tag:` header in `README.md`
    - the block's `version` in `src/code-bin-block/block.json`, which WordPress uses to cache bust the block's assets
 
    It doesn't commit or tag anything.
-3. Add the release's entry to the `== Changelog ==` section of `readme.txt`.
+3. Add the release's entry to the `## Changelog` section of `README.md`.
 4. Commit and push. The PHPUnit tests check that all the version numbers match.
 
 ## 2. Build the release
@@ -56,7 +56,9 @@ Publishing the release:
 
 ## Readme and asset updates
 
-To change `readme.txt` or the WordPress.org assets (in `.wordpress-org/`) without making a release, push the change to `main`. The **Plugin asset/readme update** workflow (`.github/workflows/wporg-assets-update.yml`) deploys it to WordPress.org.
+`README.md` is the only copy of the readme. Its front matter holds the WordPress.org readme headers (`Contributors`, `Tags`, `Stable tag`, etc). `npm run build` converts it to the WordPress.org format and saves it as `readme.txt`, which is not committed. To build just the readme, run `npm run build:readme`.
+
+To change the readme or the WordPress.org assets (in `.wordpress-org/`) without making a release, push the change to `main`. The **Plugin asset/readme update** workflow (`.github/workflows/wporg-assets-update.yml`) deploys it to WordPress.org.
 
 The workflow fails if any other files differ from the latest release on WordPress.org. Those changes need a full release.
 

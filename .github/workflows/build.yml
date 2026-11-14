@@ -70,7 +70,7 @@ jobs:
     - name: Build Assets
       run: | #shell
         npm run build
-        git add -f build/
+        git add -f build/ readme.txt
 
     - name: Commit
       run: | #shell

@@ -36,11 +36,11 @@ jobs:
     - name: Build assets
       run: npm run build
 
-    - name: Commit build and remove readme.md and composer.json from WordPress.org deploy.
+    - name: Commit build and remove README.md and composer.json from WordPress.org deploy.
       run: |
-        # The 10up action uses `git archive` so the gitignored build must be committed.
-        git add -f build/
-        git rm readme.md composer.json
+        # The 10up action uses `git archive` so the gitignored build and readme.txt must be committed.
+        git add -f build/ readme.txt
+        git rm README.md composer.json
         git config --global user.email "10upbot+github@10up.com"
         git config --global user.name "10upbot on GitHub"
         git commit -m "Build for WordPress.org deploy"

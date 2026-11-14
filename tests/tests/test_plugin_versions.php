@@ -19,10 +19,10 @@ class Test_Plugin_Versions extends WP_UnitTestCase {
 	const PLUGIN_ROOT_DIR = __DIR__ . '/../..';
 
 	/**
-	 * Test Stable Tag in readme.txt matches plugin version.
+	 * Test Stable Tag in README.md matches plugin version.
 	 */
 	public function test_stable_tag_matches_plugin_version() {
-		$readme_file = self::PLUGIN_ROOT_DIR . '/readme.txt';
+		$readme_file = self::PLUGIN_ROOT_DIR . '/README.md';
 		$readme_data = get_file_data(
 			$readme_file,
 			array(
@@ -30,7 +30,7 @@ class Test_Plugin_Versions extends WP_UnitTestCase {
 			)
 		);
 
-		$this->assertSame( PLUGIN_VERSION, $readme_data['Stable tag'], 'The Stable tag in readme.txt does not match the plugin version.' );
+		$this->assertSame( PLUGIN_VERSION, $readme_data['Stable tag'], 'The Stable tag in README.md does not match the plugin version.' );
 	}
 
 	/**

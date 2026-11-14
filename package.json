@@ -14,7 +14,8 @@
 		"LICENSE"
 	],
 	"scripts": {
-		"build": "wp-scripts build --webpack-copy-php --blocks-manifest",
+		"build": "npm run build:readme && wp-scripts build --webpack-copy-php --blocks-manifest",
+		"build:readme": "node bin/build-readme.mjs",
 		"format": "wp-scripts format",
 		"lint:css": "wp-scripts lint-style",
 		"lint:js": "wp-scripts lint-js",

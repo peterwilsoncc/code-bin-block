@@ -135,7 +135,7 @@ class Test_Plugin_Headers extends WP_UnitTestCase {
 	 */
 	public static function wpSetupBeforeClass() {
 		// Get the file names.
-		self::$file_names['readme'] = self::PLUGIN_ROOT_DIR . '/readme.txt';
+		self::$file_names['readme'] = self::PLUGIN_ROOT_DIR . '/README.md';
 
 		self::$file_names['plugin'] = self::PLUGIN_ROOT_DIR . '/code-bin.php';
 
