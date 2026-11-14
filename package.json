@@ -1,9 +1,17 @@
 {
 	"name": "code-bin",
 	"version": "1.2.0",
-	"description": "Example block scaffolded with Create Block tool.",
-	"author": "The WordPress Contributors",
-	"license": "GPL-2.0-or-later",
+	"description": "Write HTML, CSS and JavaScript in WordPress and show it with a live preview your visitors can edit.",
+	"author": "Peter Wilson",
+	"license": "MIT",
+	"homepage": "https://github.com/peterwilsoncc/code-bin",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/peterwilsoncc/code-bin.git"
+	},
+	"bugs": {
+		"url": "https://github.com/peterwilsoncc/code-bin/issues"
+	},
 	"main": "build/index.js",
 	"files": [
 		"build",

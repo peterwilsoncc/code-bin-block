@@ -4,7 +4,7 @@ Tags: code, html, css, javascript, block
 Tested up to: 7.2
 Stable tag: 1.2.0
 License: MIT
-License URI: https://github.com/peterwilsoncc/code-bin-block/blob/main/LICENSE
+License URI: https://github.com/peterwilsoncc/code-bin/blob/main/LICENSE
 ---
 
 # Code Bin
@@ -30,7 +30,7 @@ Infinite loops in the JavaScript are stopped before they can freeze the visitor'
 
 Syntax highlighting is provided by [microlighter](https://github.com/davatron5000/microlighter), which uses the CSS Custom Highlight API.
 
-If you find any bugs or wish to contribute a pull request, please do so via the [plugin's GitHub repository](https://github.com/peterwilsoncc/code-bin-block).
+If you find any bugs or wish to contribute a pull request, please do so via the [plugin's GitHub repository](https://github.com/peterwilsoncc/code-bin).
 
 ## Frequently Asked Questions
 
@@ -149,7 +149,7 @@ In theme.json, write multi-word names in camel case, eg `colorScheme`, `buttonHo
 
 ### How is this plugin licensed?
 
-The plugin code is licensed under the [MIT License](https://github.com/peterwilsoncc/code-bin-block/blob/main/LICENSE).
+The plugin code is licensed under the [MIT License](https://github.com/peterwilsoncc/code-bin/blob/main/LICENSE).
 
 The bundled [microlighter](https://github.com/davatron5000/microlighter), [Acorn](https://github.com/acornjs/acorn) and [acorn-walk](https://github.com/acornjs/acorn/tree/master/acorn-walk) libraries are also licensed under the MIT License.
 

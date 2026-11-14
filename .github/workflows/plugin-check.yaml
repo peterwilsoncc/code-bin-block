@@ -21,8 +21,6 @@ jobs:
     - name: Run plugin check
       uses: wordpress/plugin-check-action@10857da14b6c2246d15402b3e69f777edcf8c12e # v1.1.9
       with:
-        # The WordPress.org slug, it differs from the repository name.
-        slug: code-bin
         exclude-directories: ".github,bin,tests"
         # Files not included in releases, see .gitattributes.
         exclude-files: ".editorconfig,.gitattributes,.gitignore,.nvmrc,.wordpress-version-checker.json,phpcs.xml.dist,phpunit.xml.dist,README.md,RELEASE.md"

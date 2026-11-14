@@ -75,5 +75,5 @@ Never delete a tag after its release has been published, because Composer and Wo
 ## Setup
 
 - The WordPress.org workflows are disabled with `if: false` until the plugin is approved on WordPress.org. To enable them, remove those lines and add the `SVN_USERNAME` and `SVN_PASSWORD` secrets to the repository.
-- The package is published on Packagist as `peterwilsoncc/code-bin-block`.
+- The package is published on Packagist as `peterwilsoncc/code-bin`.
 - The Node version used to build releases is set in `.nvmrc`.

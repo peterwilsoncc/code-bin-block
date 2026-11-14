@@ -1,6 +1,7 @@
 {
-    "name": "peterwilsoncc/code-bin-block",
-    "description": "Code Bin.",
+    "name": "peterwilsoncc/code-bin",
+    "description": "Write HTML, CSS and JavaScript in WordPress and show it with a live preview your visitors can edit.",
+    "homepage": "https://github.com/peterwilsoncc/code-bin",
     "type": "wordpress-plugin",
     "require-dev": {
         "dealerdirect/phpcodesniffer-composer-installer": "^1.0",
@@ -9,6 +10,10 @@
         "yoast/phpunit-polyfills": "^1.1"
     },
     "license": "MIT",
+    "support": {
+        "issues": "https://github.com/peterwilsoncc/code-bin/issues",
+        "source": "https://github.com/peterwilsoncc/code-bin"
+    },
     "authors": [
         {
             "name": "Peter Wilson",
