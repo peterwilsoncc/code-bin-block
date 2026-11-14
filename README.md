@@ -2,7 +2,7 @@
 Contributors: peterwilsoncc
 Tags: code, html, css, javascript, block
 Tested up to: 7.2
-Stable tag: 1.2.0
+Stable tag: 1.3.0
 License: MIT
 License URI: https://github.com/peterwilsoncc/code-bin/blob/main/LICENSE
 ---
